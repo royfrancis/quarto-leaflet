@@ -1,0 +1,39 @@
+---
+title: Leaflet
+subtitle: A quarto shortcode extension to add interactive Leaflet maps
+leaflet:
+  demo:
+    center: [48.8584, 2.2945]
+    zoom: 13
+    height: "400px"
+    markers:
+      - position: [48.8584, 2.2945]
+        popup: "<b>Eiffel Tower</b>"
+        tooltip: "Eiffel Tower"
+format:
+  html:
+    title-block-banner: true
+---
+
+A Quarto shortcode extension to embed interactive [Leaflet](https://leafletjs.com/) maps in **HTML** and **revealjs** formats.
+
+{{< leaflet demo >}}
+
+## Features
+
+- 🗺️ Interactive maps with OpenStreetMap tiles (or any custom tile provider)
+- 📍 Markers with popups, tooltips, and custom icons
+- 🎨 Bootstrap Icons and FontAwesome icon support for markers
+- 🔧 Arbitrary Leaflet options passthrough — any `L.map()` option just works
+- 📝 Two input modes: YAML metadata or inline shortcode arguments
+
+## Install
+
+- Requires Quarto >= 1.4.0
+- In the root of the quarto project, run in terminal:
+
+  ```bash
+  quarto add royfrancis/quarto-leaflet
+  ```
+
+This will install the extension under the `_extensions` subdirectory. See the [Usage](usage.html) page for details. See the repo [README](https://github.com/royfrancis/quarto-leaflet) for full list of arguments.

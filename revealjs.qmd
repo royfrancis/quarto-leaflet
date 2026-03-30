@@ -1,0 +1,242 @@
+---
+title: "Leaflet RevealJS Demo"
+author: "Roy Francis"
+date: last-modified
+leaflet:
+  map-basic:
+    center: [51.505, -0.09]
+    zoom: 13
+    height: "400px"
+  map-markers:
+    center: [59.33, 18.07]
+    zoom: 12
+    height: "400px"
+    markers:
+      - position: [59.33, 18.07]
+        popup: "<b>Stockholm</b><br>Capital of Sweden"
+        tooltip: "Stockholm"
+      - position: [59.35, 18.10]
+        popup: "Djurgården"
+      - position: [59.31, 18.05]
+        popup: "Södermalm"
+  map-markers-tab:
+    center: [59.33, 18.07]
+    zoom: 12
+    height: "400px"
+    markers-file: "data/stockholm-markers.tsv"
+    markers-separator: "\t"
+  map-icons:
+    center: [48.86, 2.35]
+    zoom: 13
+    height: "400px"
+    markers:
+      - position: [48.8584, 2.2945]
+        popup: "<b>Eiffel Tower</b>"
+        icon: "bi-geo-alt-fill"
+        icon-color: "tomato"
+        icon-size: 28
+      - position: [48.8606, 2.3376]
+        popup: "<b>Louvre Museum</b>"
+        icon: "bi-building"
+        icon-color: "#4a90d9"
+        icon-size: 24
+      - position: [48.853, 2.3499]
+        popup: "<b>Notre-Dame</b>"
+        icon: "bi-pin-map-fill"
+        icon-color: "green"
+        icon-size: 26
+  map-fontawesome:
+    center: [41.9028, 12.4964]
+    zoom: 13
+    height: "400px"
+    markers:
+      - position: [41.9028, 12.4964]
+        popup: "<b>Roman Forum</b>"
+        icon: "fa-solid fa-landmark"
+        icon-color: "#b04a2b"
+        icon-size: 26
+      - position: [41.89, 12.4922]
+        popup: "<b>Colosseum</b>"
+        icon: "fa-solid fa-torii-gate"
+        icon-color: "#5c6f7b"
+        icon-size: 24
+      - position: [41.8986, 12.4768]
+        popup: "<b>Piazza Navona</b>"
+        icon: "fa-solid fa-tree"
+        icon-color: "#2f7d32"
+        icon-size: 24
+format: 
+  revealjs:
+    include-in-header:
+      text: |
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+---
+
+## Basic map
+
+```lua
+{{{< leaflet map-basic >}}}
+```
+
+{{< leaflet map-basic >}}
+
+## Markers
+
+```lua
+{{{< leaflet map-markers >}}}
+```
+
+{{< leaflet map-markers >}}
+
+## Inline map
+
+```lua
+{{{< leaflet center="[48.86, 2.35]" zoom=14 height="350px" >}}}
+```
+
+{{< leaflet center="[48.86, 2.35]" zoom=14 height="350px" >}}
+
+## Inline map with markers
+
+```lua
+{{{< leaflet center="[59.33, 18.07]" zoom=12 height="350px" markers='[{"position":[59.33,18.07],"popup":"<b>Stockholm</b>","tooltip":"Stockholm"},{"position":[59.35,18.10],"popup":"Djurgården"},{"position":[59.31,18.05],"popup":"Södermalm"}]' >}}}
+```
+
+{{< leaflet center="[59.33, 18.07]" zoom=12 height="350px" markers='[{"position":[59.33,18.07],"popup":"<b>Stockholm</b>","tooltip":"Stockholm"},{"position":[59.35,18.10],"popup":"Djurgården"},{"position":[59.31,18.05],"popup":"Södermalm"}]' >}}
+
+## TSV file approach
+
+Needs Bootstrap CSS styles.
+
+::: {.columns}
+::: {.column width="50%"}
+
+```yaml
+leaflet:
+  map-markers-tab:
+    center: [59.33, 18.07]
+    zoom: 12
+    height: "400px"
+    markers-file: "data/stockholm-markers.tsv"
+    markers-separator: "\t"
+format: 
+  revealjs:
+    include-in-header:
+      text: |
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+```
+
+:::
+::: {.column width="50%"}
+
+```tsv
+lat	lon	popup	tooltip	icon	icon-color	icon-size
+59.33	18.07	<b>Stockholm</b><br>Capital of Sweden	Stockholm	bi-geo-alt-fill	tomato	28
+59.35	18.10	Djurgården	Djurgården	bi-tree	#2f7d32	24
+59.31	18.05	Södermalm	Södermalm	bi-pin-map-fill	#4a90d9	26
+```
+
+:::
+:::
+
+```lua
+{{{< leaflet map-markers-tab >}}}
+```
+
+{{< leaflet map-markers-tab >}}
+
+## Map icons
+
+Needs Bootstrap CSS styles.
+
+::: {.columns}
+::: {.column width="50%"}
+
+```yaml
+---
+leaflet:
+  map-icons:
+    center: [48.86, 2.35]
+    zoom: 13
+    height: "400px"
+    markers:
+      - position: [48.8584, 2.2945]
+        popup: "<b>Eiffel Tower</b>"
+        icon: "bi-geo-alt-fill"
+        icon-color: "tomato"
+        icon-size: 28
+      - position: [48.8606, 2.3376]
+        popup: "<b>Louvre Museum</b>"
+        icon: "bi-building"
+        icon-color: "#4a90d9"
+        icon-size: 24
+      - position: [48.853, 2.3499]
+        popup: "<b>Notre-Dame</b>"
+        icon: "bi-pin-map-fill"
+        icon-color: "green"
+        icon-size: 26
+format: 
+  revealjs:
+    include-in-header:
+      text: |
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+---
+
+{{{< leaflet map-icons >}}}
+```
+
+:::
+::: {.column width="50%"}
+
+{{< leaflet map-icons >}}
+
+:::
+:::
+
+## FontAwesome icons
+
+Needs FontAwesome CSS styles.
+
+::: {.columns}
+::: {.column width="50%"}
+
+```yaml
+---
+leaflet:
+  map-fontawesome:
+    center: [41.9028, 12.4964]
+    zoom: 13
+    height: "400px"
+    markers:
+      - position: [41.9028, 12.4964]
+        popup: "<b>Roman Forum</b>"
+        icon: "fa-solid fa-landmark"
+        icon-color: "#b04a2b"
+        icon-size: 26
+      - position: [41.89, 12.4922]
+        popup: "<b>Colosseum</b>"
+        icon: "fa-solid fa-torii-gate"
+        icon-color: "#5c6f7b"
+        icon-size: 24
+format:
+  revealjs:
+    include-in-header:
+      text: |
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+---
+
+{{{< leaflet map-fontawesome >}}}
+```
+
+:::
+::: {.column width="50%"}
+
+{{< leaflet map-fontawesome >}}
+
+:::
+:::
+
+## End of demo
+
+This is the end of the demo.

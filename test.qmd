@@ -1,0 +1,726 @@
+---
+title: "Test Page"
+subtitle: "Testing all leaflet shortcode inputs and error-handling behaviour"
+leaflet:
+  # ── Valid maps ──────────────────────────────────────────────────────────────
+
+  # Minimal: only center + zoom; height falls back to default (400px)
+  t-minimal:
+    center: [51.505, -0.09]
+    zoom: 13
+
+  # Basic: all three fundamental arguments
+  t-basic:
+    center: [51.505, -0.09]
+    zoom: 13
+    height: "380px"
+
+  # Markers: every popup/tooltip combination
+  t-markers:
+    center: [59.33, 18.07]
+    zoom: 11
+    height: "380px"
+    markers:
+      - position: [59.33, 18.07]        # popup + tooltip
+        popup: "<b>Stockholm</b><br>Capital city"
+        tooltip: "Stockholm"
+      - position: [59.35, 18.10]        # tooltip only
+        tooltip: "Djurgården (tooltip only)"
+      - position: [59.31, 18.05]        # popup only
+        popup: "Södermalm (popup only)"
+      - position: [59.28, 18.09]        # neither popup nor tooltip
+
+  # Markers loaded from a TSV file via markers-file + separator
+  t-markers-tab:
+    center: [59.33, 18.07]
+    zoom: 12
+    height: "360px"
+    markers-file: "data/stockholm-markers.tsv"
+    markers-separator: "\t"
+
+  # Markers loaded from a CSV file (auto-detected by extension)
+  t-markers-csv:
+    center: [59.33, 18.07]
+    zoom: 12
+    height: "360px"
+    markers-file: "data/stockholm-markers.csv"
+
+  # Markers loaded from semicolon-separated text file
+  t-markers-semi-txt:
+    center: [59.33, 18.07]
+    zoom: 12
+    height: "360px"
+    markers-file: "data/stockholm-markers-semicolon.txt"
+    markers-separator: ";"
+
+  # Markers loaded from pipe-separated text file
+  t-markers-pipe-txt:
+    center: [59.33, 18.07]
+    zoom: 12
+    height: "360px"
+    markers-file: "data/stockholm-markers-pipe.txt"
+    markers-separator: "|"
+
+  # Icon markers: Bootstrap Icons, icon-color, icon-size, icon-anchor
+  t-icons:
+    center: [48.86, 2.35]
+    zoom: 13
+    height: "380px"
+    markers:
+      - position: [48.8584, 2.2945]
+        popup: "<b>Eiffel Tower</b>"
+        icon: "bi-geo-alt-fill"
+        icon-color: "tomato"
+        icon-size: 28
+      - position: [48.8606, 2.3376]
+        popup: "<b>Louvre Museum</b>"
+        icon: "bi-building"
+        icon-color: "#4a90d9"
+        icon-size: 24
+        icon-anchor: [12, 24]           # explicit anchor offset
+      - position: [48.853, 2.3499]
+        popup: "<b>Notre-Dame</b>"
+        icon: "bi-pin-map-fill"
+        icon-color: "green"
+        icon-size: 26
+
+  # Regression check: default Leaflet markers next to a Bootstrap icon marker
+  t-default-vs-bsicon:
+    center: [51.505, -0.09]
+    zoom: 13
+    height: "340px"
+    markers:
+      - position: [51.505, -0.09]
+        popup: "Default Leaflet marker"
+        tooltip: "Default marker"
+      - position: [51.51, -0.082]
+        popup: "Bootstrap Icons marker"
+        tooltip: "Bootstrap icon"
+        icon: "bi-geo-alt-fill"
+        icon-color: "tomato"
+        icon-size: 28
+      - position: [51.5, -0.1]
+        popup: "Second default Leaflet marker"
+        tooltip: "Default marker 2"
+
+  # Font Awesome markers for icon-font compatibility testing
+  t-fontawesome:
+    center: [41.9028, 12.4964]
+    zoom: 13
+    height: "340px"
+    markers:
+      - position: [41.9028, 12.4964]
+        popup: "<b>Roman Forum</b>"
+        tooltip: "Forum"
+        icon: "fa-solid fa-landmark"
+        icon-color: "#b04a2b"
+        icon-size: 26
+      - position: [41.89, 12.4922]
+        popup: "<b>Colosseum</b>"
+        tooltip: "Colosseum"
+        icon: "fa-solid fa-torii-gate"
+        icon-color: "#5c6f7b"
+        icon-size: 24
+      - position: [41.8986, 12.4768]
+        popup: "<b>Piazza Navona</b>"
+        tooltip: "Piazza Navona"
+        icon: "fa-solid fa-tree"
+        icon-color: "#2f7d32"
+        icon-size: 24
+
+  # Custom image icon via URL
+  t-image-icon:
+    center: [51.5, -0.09]
+    zoom: 13
+    height: "340px"
+    markers:
+      - position: [51.5, -0.09]
+        popup: "Custom image icon"
+        icon:
+          url: "https://leafletjs.com/examples/custom-icons/leaf-green.png"
+          size: [38, 95]
+          anchor: [22, 94]
+      - position: [51.505, -0.07]
+        popup: "Default blue marker alongside custom icon"
+
+  # Custom tile layer (CartoDB dark_all)
+  t-tile-dark:
+    center: [40.7128, -74.006]
+    zoom: 11
+    height: "380px"
+    tile:
+      url: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+      attribution: "&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors &copy; CARTO"
+      subdomains: "abcd"
+      maxZoom: 20
+    markers:
+      - position: [40.7128, -74.006]
+        popup: "<b>New York City</b>"
+        icon: "bi-geo-alt-fill"
+        icon-color: "#ff6b6b"
+        icon-size: 28
+
+  # Custom tile layer (CartoDB Voyager)
+  t-tile-voyager:
+    center: [35.68, 139.69]
+    zoom: 12
+    height: "340px"
+    tile:
+      url: "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+      attribution: "&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors &copy; CARTO"
+      subdomains: "abcd"
+      maxZoom: 19
+
+  # Passthrough Leaflet L.map() options
+  t-passthrough:
+    center: [40.7128, -74.006]
+    zoom: 14
+    height: "340px"
+    zoomControl: false
+    scrollWheelZoom: false
+    dragging: true
+    doubleClickZoom: false
+    keyboard: false
+    minZoom: 10
+    maxZoom: 18
+
+  # ── Error-case maps (used to test graceful degradation) ─────────────────────
+
+  # Markers list with intentionally bad entries mixed with valid ones
+  t-bad-markers:
+    center: [0.0, 0.0]
+    zoom: 2
+    height: "300px"
+    markers:
+      - popup: "No position key — silently skipped"
+      - position: [51.5, -0.1]
+        popup: "Valid marker — should appear"
+      - position: "not-a-list"          # scalar string, not [lat, lon]
+        popup: "Invalid position type — silently skipped"
+      - position: [200.0, 400.0]        # out-of-range coords (Leaflet JS handles)
+        popup: "Out-of-range coords — Leaflet handles gracefully"
+      - position: [0.0, 0.0]
+        popup: "Valid marker at origin"
+
+  # tile sub-key provided as a boolean (not a sub-table) — ignored safely
+  t-tile-bool:
+    center: [51.505, -0.09]
+    zoom: 12
+    height: "300px"
+    tile: true                          # invalid type: should fall back to default OSM tile
+
+format:
+  html:
+    code-overflow: wrap
+    number-sections: true
+    include-in-header:
+      text: |
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+---
+
+This page exercises every argument and feature of the `leaflet` shortcode extension, including a suite of error cases.
+For error cases the extension must **never crash** — it must either render a visible error message or silently skip the bad input and continue rendering.
+
+::: {.callout-note}
+All tests are run in the HTML output format.
+:::
+
+## YAML-based maps
+
+### Minimal — center + zoom only
+
+Default height (`400px`) is used when `height` is omitted.
+
+```yaml
+leaflet:
+  t-minimal:
+    center: [51.505, -0.09]
+    zoom: 13
+```
+
+```lua
+{{{< leaflet t-minimal >}}}
+```
+
+{{< leaflet t-minimal >}}
+
+### Basic — center, zoom, height
+
+```yaml
+leaflet:
+  t-basic:
+    center: [51.505, -0.09]
+    zoom: 13
+    height: "380px"
+```
+
+```lua
+{{{< leaflet t-basic >}}}
+```
+
+{{< leaflet t-basic >}}
+
+### Markers — all popup/tooltip combinations
+
+Tests four markers:
+
+| Marker | popup | tooltip |
+|--------|-------|---------|
+| Stockholm | ✓ | ✓ |
+| Djurgården | — | ✓ |
+| Södermalm | ✓ | — |
+| Unnamed point | — | — |
+
+{{< leaflet t-markers >}}
+
+### Markers from TSV (markers-file + separator)
+
+Loads markers from `data/stockholm-markers.tsv` using `lat`/`lon`, `popup`,
+`tooltip`, and icon columns.
+
+```yaml
+leaflet:
+  t-markers-tab:
+    center: [59.33, 18.07]
+    zoom: 12
+    markers-file: "data/stockholm-markers.tsv"
+    markers-separator: "\t"
+```
+
+{{< leaflet t-markers-tab >}}
+
+### Markers from CSV
+
+Loads markers from `data/stockholm-markers.csv` using the generic
+`markers-file` option.
+
+```yaml
+leaflet:
+  t-markers-csv:
+    center: [59.33, 18.07]
+    zoom: 12
+    markers-file: "data/stockholm-markers.csv"
+```
+
+{{< leaflet t-markers-csv >}}
+
+### Markers from semicolon-separated .txt
+
+```yaml
+leaflet:
+  t-markers-semi-txt:
+    center: [59.33, 18.07]
+    zoom: 12
+    markers-file: "data/stockholm-markers-semicolon.txt"
+    markers-separator: ";"
+```
+
+{{< leaflet t-markers-semi-txt >}}
+
+### Markers from pipe-separated .txt
+
+```yaml
+leaflet:
+  t-markers-pipe-txt:
+    center: [59.33, 18.07]
+    zoom: 12
+    markers-file: "data/stockholm-markers-pipe.txt"
+    markers-separator: "|"
+```
+
+{{< leaflet t-markers-pipe-txt >}}
+
+### Icon markers — Bootstrap Icons
+
+Tests `icon`, `icon-color`, `icon-size`, and `icon-anchor`.
+
+```yaml
+---
+leaflet:
+  t-icons:
+    center: [48.86, 2.35]
+    zoom: 13
+    height: "380px"
+    markers:
+      - position: [48.8584, 2.2945]
+        popup: "<b>Eiffel Tower</b>"
+        icon: "bi-geo-alt-fill"
+        icon-color: "tomato"
+        icon-size: 28
+      - position: [48.8606, 2.3376]
+        popup: "<b>Louvre Museum</b>"
+        icon: "bi-building"
+        icon-color: "#4a90d9"
+        icon-size: 24
+        icon-anchor: [12, 24]           # explicit anchor offset
+      - position: [48.853, 2.3499]
+        popup: "<b>Notre-Dame</b>"
+        icon: "bi-pin-map-fill"
+        icon-color: "green"
+        icon-size: 26
+---
+
+{{{< leaflet t-icons >}}}
+```
+
+{{< leaflet t-icons >}}
+
+### Default markers and Bootstrap Icons together
+
+This map exists to catch the packaging bug where default Leaflet markers disappear while Bootstrap icon markers still render. All three markers below must be visible at the same time.
+
+```yaml
+---
+leaflet:
+  t-default-vs-bsicon:
+    center: [51.505, -0.09]
+    zoom: 13
+    height: "340px"
+    markers:
+      - position: [51.505, -0.09]
+        popup: "Default Leaflet marker"
+        tooltip: "Default marker"
+      - position: [51.51, -0.082]
+        popup: "Bootstrap Icons marker"
+        tooltip: "Bootstrap icon"
+        icon: "bi-geo-alt-fill"
+        icon-color: "tomato"
+        icon-size: 28
+      - position: [51.5, -0.1]
+        popup: "Second default Leaflet marker"
+        tooltip: "Default marker 2"
+---
+{{{< leaflet t-default-vs-bsicon >}}}
+```
+
+{{< leaflet t-default-vs-bsicon >}}
+
+### FontAwesome markers
+
+This page loads FontAwesome CSS in its HTML header so these icon-font markers can render without requiring extra project setup.
+
+```yaml
+leaflet:
+  t-fontawesome:
+    center: [41.9028, 12.4964]
+    zoom: 13
+    markers:
+      - position: [41.9028, 12.4964]
+        icon: "fa-solid fa-landmark"
+      - position: [41.89, 12.4922]
+        icon: "fa-solid fa-torii-gate"
+      - position: [41.8986, 12.4768]
+        icon: "fa-solid fa-tree"
+```
+
+{{< leaflet t-fontawesome >}}
+
+### Custom image icon
+
+The first marker uses a remote PNG via `icon: {url: ..., size: [...], anchor: [...]}`.
+
+{{< leaflet t-image-icon >}}
+
+### Custom tile layer — CartoDB dark
+
+Tests the `tile` sub-object with `url`, `attribution`, `subdomains`, and `maxZoom`.
+
+{{< leaflet t-tile-dark >}}
+
+### Custom tile layer — CartoDB Voyager
+
+{{< leaflet t-tile-voyager >}}
+
+### Passthrough Leaflet options
+
+Passes `zoomControl`, `scrollWheelZoom`, `dragging`, `doubleClickZoom`,
+`keyboard`, `minZoom`, and `maxZoom` directly to `L.map()`.
+Scroll-wheel zoom and double-click zoom are disabled; dragging is on.
+
+{{< leaflet t-passthrough >}}
+
+## Inline shortcode maps
+
+### Minimal inline — center + zoom
+
+```lua
+{{{< leaflet center="[48.86, 2.35]" zoom=14 >}}}
+```
+
+{{< leaflet center="[48.86, 2.35]" zoom=14 >}}
+
+### Inline with explicit height
+
+```lua
+{{{< leaflet center="[48.86, 2.35]" zoom=14 height="320px" >}}}
+```
+
+{{< leaflet center="[48.86, 2.35]" zoom=14 height="320px" >}}
+
+### Inline with passthrough options
+
+`scrollWheelZoom` and `zoomControl` passed inline.
+
+```lua
+{{{< leaflet center="[35.68, 139.69]" zoom=11 height="320px" scrollWheelZoom=false zoomControl=false >}}}
+```
+
+{{< leaflet center="[35.68, 139.69]" zoom=11 height="320px" scrollWheelZoom=false zoomControl=false >}}
+
+### Inline with JSON markers
+
+Markers are supplied as a JSON string.
+
+```lua
+{{{< leaflet center="[59.33, 18.07]" zoom=12 height="320px"
+    markers='[{"position":[59.33,18.07],"popup":"<b>Stockholm</b>","tooltip":"Stockholm"},{"position":[59.35,18.10],"popup":"Djurgården"},{"position":[59.31,18.05],"popup":"Södermalm"}]' >}}}
+```
+
+{{< leaflet center="[59.33, 18.07]" zoom=12 height="320px" markers='[{"position":[59.33,18.07],"popup":"<b>Stockholm</b>","tooltip":"Stockholm"},{"position":[59.35,18.10],"popup":"Djurgården"},{"position":[59.31,18.05],"popup":"Södermalm"}]' >}}
+
+### Inline with TSV markers (markers-file + separator)
+
+```lua
+{{{< leaflet center="[59.33, 18.07]" zoom=12 height="320px" markers-file="data/stockholm-markers.tsv" markers-separator="\t" >}}}
+```
+
+{{< leaflet center="[59.33, 18.07]" zoom=12 height="320px" markers-file="data/stockholm-markers.tsv" markers-separator="\t" >}}
+
+### Inline with CSV markers
+
+```lua
+{{{< leaflet center="[59.33, 18.07]" zoom=12 height="320px" markers-file="data/stockholm-markers.csv" >}}}
+```
+
+{{< leaflet center="[59.33, 18.07]" zoom=12 height="320px" markers-file="data/stockholm-markers.csv" >}}
+
+### Inline with semicolon-separated .txt markers
+
+```lua
+{{{< leaflet center="[59.33, 18.07]" zoom=12 height="320px" markers-file="data/stockholm-markers-semicolon.txt" markers-separator=";" >}}}
+```
+
+{{< leaflet center="[59.33, 18.07]" zoom=12 height="320px" markers-file="data/stockholm-markers-semicolon.txt" markers-separator=";" >}}
+
+### Multiple inline maps on the same page
+
+Each map must receive a unique HTML `id` and JS variable name.
+
+```lua
+{{{< leaflet center="[35.68, 139.69]" zoom=10 height="260px" >}}}
+{{{< leaflet center="[-33.87, 151.21]" zoom=11 height="260px" >}}}
+```
+
+{{< leaflet center="[35.68, 139.69]" zoom=10 height="260px" >}}
+
+{{< leaflet center="[-33.87, 151.21]" zoom=11 height="260px" >}}
+
+### Inline Font Awesome icons
+
+This checks inline JSON markers using Font Awesome classes.
+
+```lua
+{{{< leaflet center="[41.9028, 12.4964]" zoom=13 height="320px"
+  markers='[{"position":[41.9028,12.4964],"popup":"<b>Roman Forum</b>","icon":"fa-solid fa-landmark","icon-color":"#b04a2b","icon-size":26},{"position":[41.89,12.4922],"popup":"<b>Colosseum</b>","icon":"fa-solid fa-torii-gate","icon-color":"#5c6f7b","icon-size":24},{"position":[41.8986,12.4768],"popup":"<b>Piazza Navona</b>","icon":"fa-solid fa-tree","icon-color":"#2f7d32","icon-size":24}]' >}}}
+```
+
+{{< leaflet center="[41.9028, 12.4964]" zoom=13 height="320px" markers='[{"position":[41.9028,12.4964],"popup":"<b>Roman Forum</b>","icon":"fa-solid fa-landmark","icon-color":"#b04a2b","icon-size":26},{"position":[41.89,12.4922],"popup":"<b>Colosseum</b>","icon":"fa-solid fa-torii-gate","icon-color":"#5c6f7b","icon-size":24},{"position":[41.8986,12.4768],"popup":"<b>Piazza Navona</b>","icon":"fa-solid fa-tree","icon-color":"#2f7d32","icon-size":24}]' >}}
+
+## Error handling
+
+All cases below **must not crash** Quarto rendering. The extension either emits a
+visible error notice or silently skips the offending input.
+
+### No arguments whatsoever
+
+`center` is required; the extension must report this without crashing.
+
+```lua
+{{{< leaflet >}}}
+```
+
+**Expected:** visible error — `'center' is required`
+
+{{< leaflet >}}
+
+### Named label that does not exist in metadata
+
+```lua
+{{{< leaflet no-such-map >}}}
+```
+
+**Expected:** visible error — `map 'no-such-map' not found in metadata`
+
+{{< leaflet no-such-map >}}
+
+### Invalid center — no brackets
+
+```lua
+{{{< leaflet center="51.505,-0.09" zoom=13 >}}}
+```
+
+**Expected:** visible error — `'center' is required`
+
+{{< leaflet center="51.505,-0.09" zoom=13 >}}
+
+### Invalid center — only one coordinate
+
+```lua
+{{{< leaflet center="[51.505]" zoom=13 >}}}
+```
+
+**Expected:** visible error — `'center' is required`
+
+{{< leaflet center="[51.505]" zoom=13 >}}
+
+### Invalid center — non-numeric values
+
+```lua
+{{{< leaflet center="[abc, xyz]" zoom=13 >}}}
+```
+
+**Expected:** visible error — `'center' is required`
+
+{{< leaflet center="[abc, xyz]" zoom=13 >}}
+
+### Invalid center — empty brackets
+
+```lua
+{{{< leaflet center="[]" zoom=13 >}}}
+```
+
+**Expected:** visible error — `'center' is required`
+
+{{< leaflet center="[]" zoom=13 >}}
+
+### Invalid center — too many coordinates
+
+```lua
+{{{< leaflet center="[51.5, -0.09, 100]" zoom=13 >}}}
+```
+
+**Expected:** visible error — `'center' is required` (parser requires exactly 2 values)
+
+{{< leaflet center="[51.5, -0.09, 100]" zoom=13 >}}
+
+### Zoom as non-numeric string
+
+`zoom` is invalid; the extension must fall back to the default zoom of `13`.
+
+```lua
+{{{< leaflet center="[51.505, -0.09]" zoom="very-high" height="300px" >}}}
+```
+
+**Expected:** map renders at default zoom 13
+
+{{< leaflet center="[51.505, -0.09]" zoom="very-high" height="300px" >}}
+
+### Invalid JSON for inline markers
+
+Markers are silently dropped; the map still renders.
+
+```lua
+{{{< leaflet center="[51.505, -0.09]" zoom=13 height="300px" markers="not-json-at-all" >}}}
+```
+
+**Expected:** map renders without markers
+
+{{< leaflet center="[51.505, -0.09]" zoom=13 height="300px" markers="not-json-at-all" >}}
+
+### Inline markers JSON — wrong root type (not an array)
+
+```lua
+{{{< leaflet center="[51.505, -0.09]" zoom=13 height="300px" markers='{"position":[51.5,-0.1],"popup":"object not array"}' >}}}
+```
+
+**Expected:** map renders without markers (JSON object instead of array is ignored)
+
+{{< leaflet center="[51.505, -0.09]" zoom=13 height="300px" markers='{"position":[51.5,-0.1],"popup":"object not array"}' >}}
+
+### Inline marker with missing position in JSON array
+
+The marker without `position` is silently skipped; valid markers are added.
+
+```lua
+{{{< leaflet center="[51.505, -0.09]" zoom=13 height="300px"
+    markers='[{"popup":"no position"},{"position":[51.5,-0.1],"popup":"valid marker"}]' >}}}
+```
+
+**Expected:** map renders with one marker (lat 51.5, lon -0.1)
+
+{{< leaflet center="[51.505, -0.09]" zoom=13 height="300px" markers='[{"popup":"no position"},{"position":[51.5,-0.1],"popup":"valid marker"}]' >}}
+
+### YAML map with bad marker entries mixed with valid ones
+
+Uses the `t-bad-markers` YAML map (defined in frontmatter) which includes:
+
+- A marker with no `position` key → skipped
+- A marker with `position: "not-a-list"` → skipped
+- Two valid markers → rendered
+
+**Expected:** map renders with 3 visible markers (valid + out-of-range as Leaflet handles it)
+
+{{< leaflet t-bad-markers >}}
+
+### YAML `tile` given as a boolean, not a sub-table
+
+Uses the `t-tile-bool` YAML map where `tile: true` instead of a sub-object.
+
+**Expected:** map renders using the default OpenStreetMap tile layer
+
+{{< leaflet t-tile-bool >}}
+
+### Unknown / extra kwargs (passthrough)
+
+Unrecognised kwargs are forwarded to `L.map()` as options. Leaflet ignores
+unrecognised options, so no error should occur.
+
+```lua
+{{{< leaflet center="[51.505, -0.09]" zoom=13 height="280px" unknownOption="foo" anotherFake=42 >}}}
+```
+
+**Expected:** map renders normally (unknown options are ignored by Leaflet)
+
+{{< leaflet center="[51.505, -0.09]" zoom=13 height="280px" unknownOption="foo" anotherFake=42 >}}
+
+### Wrong separator for markers-file
+
+The file exists, but `markers-separator` is intentionally wrong.
+Rows should fail to parse into valid marker coordinates, while the map itself
+still renders without crashing.
+
+```lua
+{{{< leaflet center="[59.33, 18.07]" zoom=12 height="300px" markers-file="data/stockholm-markers-semicolon.txt" markers-separator="," >}}}
+```
+
+**Expected:** map renders, but no markers are added.
+
+{{< leaflet center="[59.33, 18.07]" zoom=12 height="300px" markers-file="data/stockholm-markers-semicolon.txt" markers-separator="," >}}
+
+### Multiple positional args (not a valid named-label call)
+
+When more than one positional arg is given, the shortcode falls through to
+kwargs mode.  With no `center` kwarg the extension must report the missing
+argument.
+
+```lua
+{{{< leaflet t-basic extra-arg >}}}
+```
+
+**Expected:** visible error — `'center' is required`
+
+{{< leaflet t-basic extra-arg >}}
+
+### Named label call with extra kwargs (kwargs win)
+
+When both a positional label *and* kwargs are present, the code switches to
+kwargs mode and the label is ignored. With no `center` kwarg the shortcode
+reports the error.
+
+```lua
+{{{< leaflet t-basic zoom=13 >}}}
+```
+
+**Expected:** visible error — `'center' is required` (label is ignored; `center` kwarg is absent)
+
+{{< leaflet t-basic zoom=13 >}}

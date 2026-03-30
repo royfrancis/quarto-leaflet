@@ -1,0 +1,29 @@
+/* quarto-leaflet: map container styles */
+.quarto-leaflet-map {
+  width: 100%;
+  min-height: 200px;
+  z-index: 1;
+}
+
+/* Remove default L.divIcon background/border for icon font markers */
+.leaflet-div-icon-custom {
+  background: transparent !important;
+  border: none !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* revealjs themes can make controls transparent; enforce readable UI */
+.reveal .leaflet-container .leaflet-bar a,
+.reveal .leaflet-container .leaflet-control-layers-toggle {
+  background-color: rgba(255, 255, 255, 0.96);
+  color: #1b1b1b;
+  border-bottom: 1px solid #bdbdbd;
+}
+
+.reveal .leaflet-container .leaflet-control-layers,
+.reveal .leaflet-container .leaflet-control-attribution {
+  background: rgba(255, 255, 255, 0.9);
+  color: #1b1b1b;
+}
