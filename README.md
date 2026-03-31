@@ -29,7 +29,7 @@ leaflet:
       - lat: 59.33
         lon: 18.07
         popup: "<b>Stockholm</b>"
-        icon: "fa-solid fa-location-dot"
+        icon: "fa-solid fa-house"
         icon-color: "red"
 ---
 
@@ -61,9 +61,9 @@ markers:
   - lat: 48.86
     lon: 2.35
     popup: "Paris"
-    icon: "fa-solid fa-location-dot"    # Font Awesome
+    icon: "fa-solid fa-house"    # Font Awesome
     icon-color: "tomato"
-    icon-size: 24
+    icon-size: 20
   - lat: 48.86
     lon: 2.29
     popup: "Eiffel Tower"
@@ -86,13 +86,11 @@ leaflet:
   mymap:
     center: [59.33, 18.07]
     zoom: 12
-    markers-file: "data/stockholm-markers.txt"
-    markers-sep: "|"
+    markers-file: "data/stockholm-markers.tsv"
+    markers-sep: "\t"
 ```
 
 The file must include coordinate columns (`lat` + `lon`).
-
-Defaults: comma for `.csv`, tab for `.tsv`, tab otherwise.
 
 ### Passthrough options
 
@@ -189,7 +187,7 @@ Use these inside the shortcode-handled `tile:` sub-object.
 
 | Option | Type | Description |
 |---|---|---|
-| `url` | string | Tile URL template, for example `https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png`. |
+| `url` | string | Tile URL template, for example `https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png`. See [examples](https://alexurquhart.github.io/free-tiles/).|
 | `attribution` | string | Attribution HTML shown in the map attribution control. |
 | `minZoom` | number | Minimum zoom level at which tiles are requested. |
 | `maxZoom` | number | Maximum zoom level at which tiles are requested. |
@@ -224,12 +222,12 @@ Any additional scalar tile template variables are also forwarded. For example, i
 | `lon` | *(required)* | Longitude of the marker |
 | `popup` | — | HTML content shown in a popup |
 | `tooltip` | — | Text shown as a tooltip |
-| `icon` | *(default marker)* | Font Awesome class, or sub-object `{url, size, anchor}` for a custom image |
-| `icon-color` | `"currentColor"` | Background colour for the circular badge behind icon-font markers; the glyph itself is rendered in white |
-| `icon-size` | `16` | Base size in pixels for icon-font markers; scales both the white glyph and its circular badge |
+| `icon` | *(default marker)* | Font Awesome class (FA 6.5.2), or sub-object `{url, size, anchor}` for a custom image |
+| `icon-color` | `"currentColor"` | Colour of the location-pin background icon behind icon-font markers; the glyph itself is rendered in white |
+| `icon-size` | `14` | Base size in pixels for icon-font markers; scales both the white glyph and its location-pin background |
 | `icon-anchor` | *(auto)* | `[x, y]` pixel anchor override |
 
-For full documentation, see the [usage guide](https://royfrancis.github.io/quarto-leaflet/usage.html).
+For examples, see the [usage guide](https://royfrancis.github.io/quarto-leaflet/usage.html).
 
 ---
 

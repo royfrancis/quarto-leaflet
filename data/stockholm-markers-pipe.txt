@@ -1,4 +1,4 @@
 lat|lon|popup|tooltip|icon|icon-color
-59.33|18.07|<b>Stockholm</b><br>Capital of Sweden|Stockholm|fa-solid fa-location-dot|tomato
+59.33|18.07|<b>Stockholm</b><br>Capital of Sweden|Stockholm|fa-solid fa-house|tomato
 59.35|18.10|Djurgården|Djurgården|fa-solid fa-tree|#2f7d32
-59.31|18.05|Södermalm|Södermalm|fa-solid fa-map-pin|#4a90d9
+59.31|18.05|Södermalm|Södermalm|fa-solid fa-briefcase|#4a90d9

@@ -31,6 +31,20 @@ local function meta_to_html(val)
   return pandoc.utils.stringify(val)
 end
 
+-- Convert metadata to inline HTML (no block wrapper).
+-- Useful for tooltips where <p> wrappers can add unwanted spacing.
+local function meta_to_inline_html(val)
+  if val == nil then return nil end
+  if type(val) == "string" then return val end
+  local ok, html = pcall(function()
+    return pandoc.write(pandoc.Pandoc({pandoc.Plain(val)}), "html")
+  end)
+  if ok and html then
+    return tostring(html):gsub("%s+$", "")
+  end
+  return pandoc.utils.stringify(val)
+end
+
 local function meta_to_num(val)
   local s = meta_to_str(val)
   return s and tonumber(s)
@@ -134,7 +148,7 @@ local function marker_from_meta_entry(m_meta)
   end
 
   if m_meta["popup"]   then m.popup   = meta_to_html(m_meta["popup"]) end
-  if m_meta["tooltip"] then m.tooltip = meta_to_html(m_meta["tooltip"]) end
+  if m_meta["tooltip"] then m.tooltip = meta_to_inline_html(m_meta["tooltip"]) end
   if m_meta["icon"] then
     local iv = m_meta["icon"]
     if type(iv) == "table" and iv["url"] then
@@ -499,6 +513,33 @@ local function cfg_from_kwargs(kwargs)
   local h = kstr("height"); if h then cfg.height = h end
   local w = kstr("width");  if w then cfg.width  = w end
 
+  -- tile as inline JSON string, e.g.
+  -- tile='{"url":"https://.../{z}/{x}/{y}.png","attribution":"..."}'
+  local t_str = kstr("tile")
+  if t_str then
+    local ok, parsed = pcall(pandoc.json.decode, t_str)
+    if ok and type(parsed) == "table" then
+      local tile_obj = nil
+      if parsed.url ~= nil then
+        tile_obj = parsed
+      elseif #parsed == 1 and type(parsed[1]) == "table" and parsed[1].url ~= nil then
+        -- Backward-compatible support for a single-item array wrapper.
+        tile_obj = parsed[1]
+      end
+
+      if tile_obj ~= nil then
+        cfg.tile = {}
+        for k, v in pairs(tile_obj) do
+          if type(v) == "string" then
+            cfg.tile[k] = tonumber(v) or v
+          else
+            cfg.tile[k] = v
+          end
+        end
+      end
+    end
+  end
+
   -- markers as inline JSON string, e.g. markers='[{"lat":51.5,"lon":-0.09,"popup":"text"}]'
   local m_str = kstr("markers")
   if m_str then
@@ -525,9 +566,9 @@ local function cfg_from_kwargs(kwargs)
   for k, v in pairs(kwargs) do
     if not SPECIAL[k] then
       local s = meta_to_str(v)
-      if s then s = s:lower() end
-      if     s == "true"  then cfg[k] = true
-      elseif s == "false" then cfg[k] = false
+      local s_lc = s and s:lower() or nil
+      if     s_lc == "true"  then cfg[k] = true
+      elseif s_lc == "false" then cfg[k] = false
       else cfg[k] = tonumber(s) or s
       end
     end
@@ -609,6 +650,9 @@ local function build_js(map_id, map_var, cfg)
 
       if lat ~= nil and lon ~= nil then
         local coords = { lat, lon }
+        local popup_offset = nil
+        local tooltip_offset = nil
+        
         if m.icon then
           local ic = m.icon
           if type(ic) == "table" and ic.url then
@@ -623,28 +667,47 @@ local function build_js(map_id, map_var, cfg)
               "var _m = L.marker(%s, {icon: _icon}).addTo(%s);\n",
               json(coords), map_var))
           else
-            -- Font icon rendered as a white glyph on a colored circular badge.
-            local sz         = m.icon_size or 16
+            -- Font icon rendered as a white glyph on a colored location-pin background.
+            local sz         = m.icon_size or 14
             local color      = m.icon_color or "currentColor"
-            local badge_size = math.max(math.floor(sz * 2 + 0.5), sz + 8)
-            local ax         = m.icon_anchor and m.icon_anchor[1] or math.floor(badge_size / 2)
-            local ay         = m.icon_anchor and m.icon_anchor[2] or math.floor(badge_size / 2)
+            -- Keep a near-constant visual padding around the glyph across sizes.
+            local pin_padding = 4
+            local pin_head_ratio = 0.6
+            local pin_size   = math.max(math.ceil((sz + 2 * pin_padding) / pin_head_ratio), sz + 10)
+            local ax         = m.icon_anchor and m.icon_anchor[1] or math.floor(pin_size / 2)
+            local ay         = m.icon_anchor and m.icon_anchor[2] or pin_size
             local html       = string.format(
-              '<span class="quarto-leaflet-icon-badge" style="--ql-icon-size:%dpx;--ql-badge-size:%dpx;--ql-badge-color:%s;"><i class="%s quarto-leaflet-icon-glyph"></i></span>',
-              sz, badge_size, color, ic)
+              '<span class="quarto-leaflet-icon-pin" style="--ql-icon-size:%dpx;--ql-pin-size:%dpx;--ql-pin-color:%s;"><i class="fa-solid fa-location-pin quarto-leaflet-icon-pin-bg" aria-hidden="true"></i><i class="%s quarto-leaflet-icon-glyph" aria-hidden="true"></i></span>',
+              sz, pin_size, color, ic)
             table.insert(out, string.format(
               'var _icon = L.divIcon({html: %s, className: "leaflet-div-icon-custom", iconSize: [%d, %d], iconAnchor: [%d, %d]});\n',
-              json(html), badge_size, badge_size, ax, ay))
+              json(html), pin_size, pin_size, ax, ay))
             table.insert(out, string.format(
               "var _m = L.marker(%s, {icon: _icon}).addTo(%s);\n",
               json(coords), map_var))
+            -- Offset for font icons, scaled by pin size
+            popup_offset = {0, -pin_size}
+            tooltip_offset = {math.ceil(pin_size / 2), -math.ceil(pin_size / 2)}
           end
         else
           table.insert(out, string.format("var _m = L.marker(%s).addTo(%s);\n",
             json(coords), map_var))
         end
-        if m.popup   then table.insert(out, string.format("_m.bindPopup(%s);\n",   json(m.popup))) end
-        if m.tooltip then table.insert(out, string.format("_m.bindTooltip(%s);\n", json(m.tooltip))) end
+        
+        if m.popup then
+          if popup_offset then
+            table.insert(out, string.format("_m.bindPopup(%s, {offset: %s});\n", json(m.popup), json(popup_offset)))
+          else
+            table.insert(out, string.format("_m.bindPopup(%s);\n", json(m.popup)))
+          end
+        end
+        if m.tooltip then
+          if tooltip_offset then
+            table.insert(out, string.format("_m.bindTooltip(%s, {offset: %s});\n", json(m.tooltip), json(tooltip_offset)))
+          else
+            table.insert(out, string.format("_m.bindTooltip(%s);\n", json(m.tooltip)))
+          end
+        end
       end
     end
   end

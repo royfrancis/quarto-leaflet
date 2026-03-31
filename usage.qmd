@@ -40,21 +40,22 @@ leaflet:
       - lat: 48.8584
         lon: 2.2945
         popup: "<b>Eiffel Tower</b>"
-        icon: "fa-solid fa-location-dot"
+        icon: "fa-solid fa-house"
         icon-color: "tomato"
-        icon-size: 20
+        icon-size: 16
       - lat: 48.8606
         lon: 2.3376
+        tooltip: "Louvre Museum"
         popup: "<b>Louvre Museum</b>"
         icon: "fa-solid fa-building-columns"
         icon-color: "#4a90d9"
-        icon-size: 20
+        icon-size: 16
       - lat: 48.853
         lon: 2.3499
         popup: "<b>Notre-Dame</b>"
         icon: "fa-solid fa-church"
         icon-color: "green"
-        icon-size: 20
+        icon-size: 16
   map-fontawesome:
     center: [41.9028, 12.4964]
     zoom: 13
@@ -65,19 +66,20 @@ leaflet:
         popup: "<b>Roman Forum</b>"
         icon: "fa-solid fa-landmark"
         icon-color: "#b04a2b"
-        icon-size: 20
+        icon-size: 16
       - lat: 41.89
         lon: 12.4922
+        tooltip: "Colosseum"
         popup: "<b>Colosseum</b>"
         icon: "fa-solid fa-torii-gate"
         icon-color: "#5c6f7b"
-        icon-size: 20
+        icon-size: 16
       - lat: 41.8986
         lon: 12.4768
         popup: "<b>Piazza Navona</b>"
         icon: "fa-solid fa-tree"
         icon-color: "#2f7d32"
-        icon-size: 20
+        icon-size: 16
   map-options:
     center: [40.7128, -74.006]
     zoom: 14
@@ -94,9 +96,9 @@ leaflet:
       - lat: 40.7128
         lon: -74.006
         popup: "<b>New York City</b>"
-        icon: "fa-solid fa-location-dot"
+        icon: "fa-solid fa-house"
         icon-color: "#ff6b6b"
-        icon-size: 26
+        icon-size: 20
   map-tile-topplus:
     center: [40.7128, -74.006]
     zoom: 11
@@ -230,9 +232,9 @@ leaflet:
 
 ```tsv
 lat	lon	popup	tooltip	icon	icon-color	icon-size
-59.33	18.07	<b>Stockholm</b><br>Capital of Sweden	Stockholm	fa-solid fa-location-dot	tomato	24
-59.35	18.10	Djurgården	Djurgården	fa-solid fa-tree	#2f7d32	20
-59.31	18.05	Södermalm	Södermalm	fa-solid fa-map-pin	#4a90d9	22
+59.33	18.07	<b>Stockholm</b><br>Capital of Sweden	Stockholm	fa-solid fa-house	tomato	18
+59.35	18.10	Djurgården	Djurgården	fa-solid fa-tree	#2f7d32	18
+59.31	18.05	Södermalm	Södermalm	fa-solid fa-briefcase	#4a90d9	18
 ```
 
 ```lua
@@ -273,9 +275,9 @@ leaflet:
 
 ```csv
 lat,lon,popup,tooltip,icon,icon-color,icon-size
-59.33,18.07,"<b>Stockholm</b><br>Capital of Sweden",Stockholm,fa-solid fa-location-dot,tomato,24
-59.35,18.10,Djurgården,Djurgården,fa-solid fa-tree,#2f7d32,20
-59.31,18.05,Södermalm,Södermalm,fa-solid fa-map-pin,#4a90d9,22
+59.33,18.07,"<b>Stockholm</b><br>Capital of Sweden",Stockholm,fa-solid fa-house,tomato,26
+59.35,18.10,Djurgården,Djurgården,fa-solid fa-tree,#2f7d32,26
+59.31,18.05,Södermalm,Södermalm,fa-solid fa-briefcase,#4a90d9,26
 ```
 
 ```lua
@@ -294,7 +296,7 @@ Inline shortcodes can also read CSV files:
 
 ## Icon markers
 
-Use Font Awesome classes for markers. The extension now loads the stylesheet automatically, so no extra header setup is required.
+Use Font Awesome 6 classes for markers. The extension now loads the stylesheet automatically, so no extra header setup is required.
 
 ```yaml
 ---
@@ -307,21 +309,22 @@ leaflet:
       - lat: 48.8584
         lon: 2.2945
         popup: "<b>Eiffel Tower</b>"
-        icon: "fa-solid fa-location-dot"
+        icon: "fa-solid fa-house"
         icon-color: "tomato"
-        icon-size: 20
+        icon-size: 16
       - lat: 48.8606
         lon: 2.3376
+        tooltip: "Louvre Museum"
         popup: "<b>Louvre Museum</b>"
         icon: "fa-solid fa-building-columns"
         icon-color: "#4a90d9"
-        icon-size: 20
+        icon-size: 16
       - lat: 48.853
         lon: 2.3499
         popup: "<b>Notre-Dame</b>"
         icon: "fa-solid fa-church"
         icon-color: "green"
-        icon-size: 20
+        icon-size: 16
 ---
 
 {{{< leaflet map-icons >}}}
@@ -346,13 +349,14 @@ leaflet:
         popup: "<b>Roman Forum</b>"
         icon: "fa-solid fa-landmark"
         icon-color: "#b04a2b"
-        icon-size: 20
+        icon-size: 16
       - lat: 41.89
         lon: 12.4922
+        tooltip: "Colosseum"
         popup: "<b>Colosseum</b>"
         icon: "fa-solid fa-torii-gate"
         icon-color: "#5c6f7b"
-        icon-size: 20
+        icon-size: 16
 ---
 
 {{{< leaflet map-fontawesome >}}}
@@ -370,8 +374,8 @@ leaflet:
 
 Additional icon options:
 
-- `icon-color`: background color for the circular badge behind icon-font markers; the glyph itself is white (default: `"currentColor"`)
-- `icon-size`: base size in pixels for icon-font markers; scales both the white glyph and its circular badge (default: `20`)
+- `icon-color`: color of the location-pin background icon behind icon-font markers; the glyph itself is white (default: `"currentColor"`)
+- `icon-size`: base size in pixels for icon-font markers; scales both the white glyph and its location-pin background (default: `14`)
 - `icon-anchor`: `[x, y]` anchor point override
 - `markers-sep`: field separator for `markers-file` (for example `","`, `"\t"`, `"|"`)
 
@@ -398,7 +402,7 @@ leaflet:
 
 ## Custom tile layers
 
-Specify a custom tile provider via the `tile` sub-object. See this [demo](https://leaflet-extras.github.io/leaflet-providers/preview/) for examples of tile provider URLs and attribution strings.
+Specify a custom tile provider via the `tile` sub-object. See this [demo](https://leaflet-extras.github.io/leaflet-providers/preview/) or [this](https://alexurquhart.github.io/free-tiles/) for examples of tile provider URLs and attribution strings.
 
 ### TopPlusOpen
 
@@ -439,6 +443,14 @@ leaflet:
 ```
 
 {{< leaflet map-tile-cartodb >}}
+
+### ESRI World Topo Map
+
+```lua
+{{{< leaflet center="[40.7128, -74.006]" zoom=11 height="400px" tile='{"url":"https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}","attribution":"Tiles &copy; ESRI"}' >}}}
+```
+
+{{< leaflet center="[40.7128, -74.006]" zoom=11 height="400px" tile='{"url":"https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}","attribution":"Tiles &copy; ESRI"}' >}}
 
 ## Multiple maps
 

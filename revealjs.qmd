@@ -36,21 +36,21 @@ leaflet:
       - lat: 48.8584
         lon: 2.2945
         popup: "<b>Eiffel Tower</b>"
-        icon: "fa-solid fa-location-dot"
+        icon: "fa-solid fa-house"
         icon-color: "tomato"
-        icon-size: 24
+        icon-size: 20
       - lat: 48.8606
         lon: 2.3376
         popup: "<b>Louvre Museum</b>"
         icon: "fa-solid fa-building-columns"
         icon-color: "#4a90d9"
-        icon-size: 20
+        icon-size: 16
       - lat: 48.853
         lon: 2.3499
         popup: "<b>Notre-Dame</b>"
         icon: "fa-solid fa-church"
         icon-color: "green"
-        icon-size: 22
+        icon-size: 18
   map-fontawesome:
     center: [41.9028, 12.4964]
     zoom: 13
@@ -61,19 +61,19 @@ leaflet:
         popup: "<b>Roman Forum</b>"
         icon: "fa-solid fa-landmark"
         icon-color: "#b04a2b"
-        icon-size: 22
+        icon-size: 18
       - lat: 41.89
         lon: 12.4922
         popup: "<b>Colosseum</b>"
         icon: "fa-solid fa-torii-gate"
         icon-color: "#5c6f7b"
-        icon-size: 20
+        icon-size: 16
       - lat: 41.8986
         lon: 12.4768
         popup: "<b>Piazza Navona</b>"
         icon: "fa-solid fa-tree"
         icon-color: "#2f7d32"
-        icon-size: 20
+        icon-size: 16
 format: revealjs
 ---
 
@@ -129,9 +129,9 @@ format:
 
 ```tsv
 lat	lon	popup	tooltip	icon	icon-color	icon-size
-59.33	18.07	<b>Stockholm</b><br>Capital of Sweden	Stockholm	fa-solid fa-location-dot	tomato	24
-59.35	18.10	Djurgården	Djurgården	fa-solid fa-tree	#2f7d32	20
-59.31	18.05	Södermalm	Södermalm	fa-solid fa-map-pin	#4a90d9	22
+59.33	18.07	<b>Stockholm</b><br>Capital of Sweden	Stockholm	fa-solid fa-house	tomato	18
+59.35	18.10	Djurgården	Djurgården	fa-solid fa-tree	#2f7d32	18
+59.31	18.05	Södermalm	Södermalm	fa-solid fa-briefcase	#4a90d9	18
 ```
 
 :::
@@ -164,21 +164,21 @@ leaflet:
       - lat: 48.8584
         lon: 2.2945
         popup: "<b>Eiffel Tower</b>"
-        icon: "fa-solid fa-location-dot"
+        icon: "fa-solid fa-house"
         icon-color: "tomato"
-        icon-size: 24
+        icon-size: 20
       - lat: 48.8606
         lon: 2.3376
         popup: "<b>Louvre Museum</b>"
         icon: "fa-solid fa-building-columns"
         icon-color: "#4a90d9"
-        icon-size: 20
+        icon-size: 16
       - lat: 48.853
         lon: 2.3499
         popup: "<b>Notre-Dame</b>"
         icon: "fa-solid fa-church"
         icon-color: "green"
-        icon-size: 22
+        icon-size: 18
 ---
 
 {{{< leaflet map-icons >}}}
@@ -212,13 +212,13 @@ leaflet:
         popup: "<b>Roman Forum</b>"
         icon: "fa-solid fa-landmark"
         icon-color: "#b04a2b"
-        icon-size: 22
+        icon-size: 18
       - lat: 41.89
         lon: 12.4922
         popup: "<b>Colosseum</b>"
         icon: "fa-solid fa-torii-gate"
         icon-color: "#5c6f7b"
-        icon-size: 20
+        icon-size: 16
 ---
 
 {{{< leaflet map-fontawesome >}}}

@@ -1,6 +1,6 @@
 ---
 title: "Test Page"
-subtitle: "Testing all leaflet shortcode inputs and error-handling behaviour"
+subtitle: "Testing leaflet shortcode inputs and error-handling behaviour"
 leaflet:
   # ── Valid maps ──────────────────────────────────────────────────────────────
 
@@ -89,22 +89,22 @@ leaflet:
       - lat: 48.8584
         lon: 2.2945
         popup: "<b>Eiffel Tower</b>"
-        icon: "fa-solid fa-location-dot"
+        icon: "fa-solid fa-house"
         icon-color: "tomato"
-        icon-size: 20
+        icon-size: 16
       - lat: 48.8606
         lon: 2.3376
         popup: "<b>Louvre Museum</b>"
         icon: "fa-solid fa-building-columns"
         icon-color: "#4a90d9"
-        icon-size: 20
+        icon-size: 16
         icon-anchor: [12, 24]           # explicit anchor offset
       - lat: 48.853
         lon: 2.3499
         popup: "<b>Notre-Dame</b>"
         icon: "fa-solid fa-church"
         icon-color: "green"
-        icon-size: 20
+        icon-size: 16
 
   # Regression check: default Leaflet markers next to a Font Awesome icon marker
   t-default-vs-fonticon:
@@ -120,9 +120,9 @@ leaflet:
         lon: -0.082
         popup: "Font Awesome marker"
         tooltip: "Font Awesome icon"
-        icon: "fa-solid fa-location-dot"
+        icon: "fa-solid fa-house"
         icon-color: "tomato"
-        icon-size: 24
+        icon-size: 20
       - lat: 51.5
         lon: -0.1
         popup: "Second default Leaflet marker"
@@ -140,21 +140,328 @@ leaflet:
         tooltip: "Forum"
         icon: "fa-solid fa-landmark"
         icon-color: "#b04a2b"
-        icon-size: 20
+        icon-size: 16
       - lat: 41.89
         lon: 12.4922
         popup: "<b>Colosseum</b>"
         tooltip: "Colosseum"
         icon: "fa-solid fa-torii-gate"
         icon-color: "#5c6f7b"
-        icon-size: 20
+        icon-size: 16
       - lat: 41.8986
         lon: 12.4768
         popup: "<b>Piazza Navona</b>"
         tooltip: "Piazza Navona"
         icon: "fa-solid fa-tree"
         icon-color: "#2f7d32"
-        icon-size: 20
+        icon-size: 16
+
+  # Stress test: numerous Font Awesome icons
+  t-fontawesome-dense:
+    center: [41.90, 12.50]
+    zoom: 13
+    height: "430px"
+    markers:
+      - lat: 41.88
+        lon: 12.46
+        popup: "house"
+        tooltip: "house"
+        icon: "fa-solid fa-house"
+        icon-color: "#e63946"
+      - lat: 41.88
+        lon: 12.47
+        popup: "tree"
+        tooltip: "tree"
+        icon: "fa-solid fa-tree"
+        icon-color: "#f4a261"
+      - lat: 41.88
+        lon: 12.48
+        popup: "church"
+        tooltip: "church"
+        icon: "fa-solid fa-church"
+        icon-color: "#e9c46a"
+      - lat: 41.88
+        lon: 12.49
+        popup: "landmark"
+        tooltip: "landmark"
+        icon: "fa-solid fa-landmark"
+        icon-color: "#2a9d8f"
+      - lat: 41.88
+        lon: 12.50
+        popup: "torii-gate"
+        tooltip: "torii-gate"
+        icon: "fa-solid fa-torii-gate"
+        icon-color: "#457b9d"
+      - lat: 41.88
+        lon: 12.51
+        popup: "building-columns"
+        tooltip: "building-columns"
+        icon: "fa-solid fa-building-columns"
+        icon-color: "#1d3557"
+      - lat: 41.88
+        lon: 12.52
+        popup: "car"
+        tooltip: "car"
+        icon: "fa-solid fa-car"
+        icon-color: "#9b5de5"
+      - lat: 41.88
+        lon: 12.53
+        popup: "bus"
+        tooltip: "bus"
+        icon: "fa-solid fa-bus"
+        icon-color: "#f15bb5"
+      - lat: 41.88
+        lon: 12.54
+        popup: "train"
+        tooltip: "train"
+        icon: "fa-solid fa-train"
+        icon-color: "#00bbf9"
+      - lat: 41.88
+        lon: 12.55
+        popup: "plane"
+        tooltip: "plane"
+        icon: "fa-solid fa-plane"
+        icon-color: "#00f5d4"
+      - lat: 41.89
+        lon: 12.46
+        popup: "ship"
+        tooltip: "ship"
+        icon: "fa-solid fa-ship"
+        icon-color: "#ef476f"
+      - lat: 41.89
+        lon: 12.47
+        popup: "bicycle"
+        tooltip: "bicycle"
+        icon: "fa-solid fa-bicycle"
+        icon-color: "#ff7f51"
+      - lat: 41.89
+        lon: 12.48
+        popup: "person-walking"
+        tooltip: "person-walking"
+        icon: "fa-solid fa-person-walking"
+        icon-color: "#ffd166"
+      - lat: 41.89
+        lon: 12.49
+        popup: "mountain"
+        tooltip: "mountain"
+        icon: "fa-solid fa-mountain"
+        icon-color: "#06d6a0"
+      - lat: 41.89
+        lon: 12.50
+        popup: "umbrella-beach"
+        tooltip: "umbrella-beach"
+        icon: "fa-solid fa-umbrella-beach"
+        icon-color: "#118ab2"
+      - lat: 41.89
+        lon: 12.51
+        popup: "sun"
+        tooltip: "sun"
+        icon: "fa-solid fa-sun"
+        icon-color: "#073b4c"
+      - lat: 41.89
+        lon: 12.52
+        popup: "moon"
+        tooltip: "moon"
+        icon: "fa-solid fa-moon"
+        icon-color: "#8338ec"
+      - lat: 41.89
+        lon: 12.53
+        popup: "cloud"
+        tooltip: "cloud"
+        icon: "fa-solid fa-cloud"
+        icon-color: "#ff006e"
+      - lat: 41.89
+        lon: 12.54
+        popup: "cloud-rain"
+        tooltip: "cloud-rain"
+        icon: "fa-solid fa-cloud-rain"
+        icon-color: "#3a86ff"
+      - lat: 41.89
+        lon: 12.55
+        popup: "snowflake"
+        tooltip: "snowflake"
+        icon: "fa-solid fa-snowflake"
+        icon-color: "#43aa8b"
+      - lat: 41.90
+        lon: 12.46
+        popup: "bolt"
+        tooltip: "bolt"
+        icon: "fa-solid fa-bolt"
+        icon-color: "#f94144"
+      - lat: 41.90
+        lon: 12.47
+        popup: "fire"
+        tooltip: "fire"
+        icon: "fa-solid fa-fire"
+        icon-color: "#f3722c"
+      - lat: 41.90
+        lon: 12.48
+        popup: "heart"
+        tooltip: "heart"
+        icon: "fa-solid fa-heart"
+        icon-color: "#f8961e"
+      - lat: 41.90
+        lon: 12.49
+        popup: "star"
+        tooltip: "star"
+        icon: "fa-solid fa-star"
+        icon-color: "#f9844a"
+      - lat: 41.90
+        lon: 12.50
+        popup: "bell"
+        tooltip: "bell"
+        icon: "fa-solid fa-bell"
+        icon-color: "#f9c74f"
+      - lat: 41.90
+        lon: 12.51
+        popup: "camera"
+        tooltip: "camera"
+        icon: "fa-solid fa-camera"
+        icon-color: "#90be6d"
+      - lat: 41.90
+        lon: 12.52
+        popup: "music"
+        tooltip: "music"
+        icon: "fa-solid fa-music"
+        icon-color: "#43aa8b"
+      - lat: 41.90
+        lon: 12.53
+        popup: "book"
+        tooltip: "book"
+        icon: "fa-solid fa-book"
+        icon-color: "#4d908e"
+      - lat: 41.90
+        lon: 12.54
+        popup: "graduation-cap"
+        tooltip: "graduation-cap"
+        icon: "fa-solid fa-graduation-cap"
+        icon-color: "#577590"
+      - lat: 41.90
+        lon: 12.55
+        popup: "briefcase"
+        tooltip: "briefcase"
+        icon: "fa-solid fa-briefcase"
+        icon-color: "#277da1"
+      - lat: 41.91
+        lon: 12.46
+        popup: "flask"
+        tooltip: "flask"
+        icon: "fa-solid fa-flask"
+        icon-color: "#d62828"
+      - lat: 41.91
+        lon: 12.47
+        popup: "stethoscope"
+        tooltip: "stethoscope"
+        icon: "fa-solid fa-stethoscope"
+        icon-color: "#f77f00"
+      - lat: 41.91
+        lon: 12.48
+        popup: "syringe"
+        tooltip: "syringe"
+        icon: "fa-solid fa-syringe"
+        icon-color: "#fcbf49"
+      - lat: 41.91
+        lon: 12.49
+        popup: "pills"
+        tooltip: "pills"
+        icon: "fa-solid fa-pills"
+        icon-color: "#eae2b7"
+      - lat: 41.91
+        lon: 12.50
+        popup: "paw"
+        tooltip: "paw"
+        icon: "fa-solid fa-paw"
+        icon-color: "#588157"
+      - lat: 41.91
+        lon: 12.51
+        popup: "fish"
+        tooltip: "fish"
+        icon: "fa-solid fa-fish"
+        icon-color: "#3a5a40"
+      - lat: 41.91
+        lon: 12.52
+        popup: "leaf"
+        tooltip: "leaf"
+        icon: "fa-solid fa-leaf"
+        icon-color: "#2d6a4f"
+      - lat: 41.91
+        lon: 12.53
+        popup: "seedling"
+        tooltip: "seedling"
+        icon: "fa-solid fa-seedling"
+        icon-color: "#40916c"
+      - lat: 41.91
+        lon: 12.54
+        popup: "apple-whole"
+        tooltip: "apple-whole"
+        icon: "fa-solid fa-apple-whole"
+        icon-color: "#52b788"
+      - lat: 41.91
+        lon: 12.55
+        popup: "pizza-slice"
+        tooltip: "pizza-slice"
+        icon: "fa-solid fa-pizza-slice"
+        icon-color: "#74c69d"
+      - lat: 41.92
+        lon: 12.46
+        popup: "mug-hot"
+        tooltip: "mug-hot"
+        icon: "fa-solid fa-mug-hot"
+        icon-color: "#bc4749"
+      - lat: 41.92
+        lon: 12.47
+        popup: "ice-cream"
+        tooltip: "ice-cream"
+        icon: "fa-solid fa-ice-cream"
+        icon-color: "#dda15e"
+      - lat: 41.92
+        lon: 12.48
+        popup: "gamepad"
+        tooltip: "gamepad"
+        icon: "fa-solid fa-gamepad"
+        icon-color: "#6d597a"
+      - lat: 41.92
+        lon: 12.49
+        popup: "football"
+        tooltip: "football"
+        icon: "fa-solid fa-football"
+        icon-color: "#b56576"
+      - lat: 41.92
+        lon: 12.50
+        popup: "dumbbell"
+        tooltip: "dumbbell"
+        icon: "fa-solid fa-dumbbell"
+        icon-color: "#e56b6f"
+      - lat: 41.92
+        lon: 12.51
+        popup: "wrench"
+        tooltip: "wrench"
+        icon: "fa-solid fa-wrench"
+        icon-color: "#eaac8b"
+      - lat: 41.92
+        lon: 12.52
+        popup: "hammer"
+        tooltip: "hammer"
+        icon: "fa-solid fa-hammer"
+        icon-color: "#355070"
+      - lat: 41.92
+        lon: 12.53
+        popup: "screwdriver-wrench"
+        tooltip: "screwdriver-wrench"
+        icon: "fa-solid fa-screwdriver-wrench"
+        icon-color: "#6d597a"
+      - lat: 41.92
+        lon: 12.54
+        popup: "key"
+        tooltip: "key"
+        icon: "fa-solid fa-key"
+        icon-color: "#b56576"
+      - lat: 41.92
+        lon: 12.55
+        popup: "lock"
+        tooltip: "lock"
+        icon: "fa-solid fa-lock"
+        icon-color: "#e56b6f"
 
   # Custom image icon via URL
   t-image-icon:
@@ -187,9 +494,9 @@ leaflet:
       - lat: 40.7128
         lon: -74.006
         popup: "<b>New York City</b>"
-        icon: "fa-solid fa-location-dot"
+        icon: "fa-solid fa-house"
         icon-color: "#ff6b6b"
-        icon-size: 24
+        icon-size: 20
 
   # Custom tile layer (CartoDB Voyager)
   t-tile-voyager:
@@ -214,6 +521,75 @@ leaflet:
     keyboard: false
     minZoom: 10
     maxZoom: 18
+
+  # Extended passthrough coverage for L.map() options listed in README
+  t-passthrough-all:
+    center: [40.7128, -74.006]
+    zoom: 13
+    height: "340px"
+    zoomControl: true
+    attributionControl: true
+    closePopupOnClick: true
+    minZoom: 3
+    maxZoom: 18
+    zoomSnap: 0.5
+    zoomDelta: 0.5
+    trackResize: true
+    boxZoom: true
+    doubleClickZoom: "center"
+    dragging: true
+    scrollWheelZoom: "center"
+    inertia: true
+    inertiaDeceleration: 3200
+    inertiaMaxSpeed: 1400
+    easeLinearity: 0.2
+    worldCopyJump: false
+    maxBoundsViscosity: 0.5
+    keyboard: true
+    keyboardPanDelta: 80
+    wheelDebounceTime: 40
+    wheelPxPerZoomLevel: 60
+    touchZoom: "center"
+    bounceAtZoomLimits: true
+    tapHold: true
+    tapTolerance: 15
+    zoomAnimation: true
+    zoomAnimationThreshold: 4
+    fadeAnimation: true
+    markerZoomAnimation: true
+    transform3DLimit: 8388608
+    preferCanvas: false
+
+  # Extended passthrough coverage for L.tileLayer() options listed in README
+  t-tile-all-options:
+    center: [40.7128, -74.006]
+    zoom: 11
+    height: "340px"
+    tile:
+      url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      attribution: "&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
+      minZoom: 0
+      maxZoom: 19
+      minNativeZoom: 0
+      maxNativeZoom: 19
+      subdomains: "abc"
+      errorTileUrl: "https://tile.openstreetmap.org/0/0/0.png"
+      zoomOffset: 0
+      tms: false
+      zoomReverse: false
+      detectRetina: false
+      crossOrigin: "anonymous"
+      referrerPolicy: "no-referrer"
+      opacity: 0.95
+      zIndex: 1
+      className: "ql-test-tile"
+      pane: "tilePane"
+      tileSize: 256
+      updateWhenIdle: false
+      updateWhenZooming: true
+      updateInterval: 200
+      keepBuffer: 2
+      noWrap: false
 
   # ── Error-case maps (used to test graceful degradation) ─────────────────────
 
@@ -248,7 +624,7 @@ format:
     number-sections: true
 ---
 
-This page exercises every argument and feature of the `leaflet` shortcode extension, including a suite of error cases.
+This page exercises various arguments and features of the `leaflet` shortcode extension, including a suite of error cases.
 For error cases the extension must **never crash** — it must either render a visible error message or silently skip the bad input and continue rendering.
 
 ::: {.callout-note}
@@ -374,22 +750,22 @@ leaflet:
       - lat: 48.8584
         lon: 2.2945
         popup: "<b>Eiffel Tower</b>"
-        icon: "fa-solid fa-location-dot"
+        icon: "fa-solid fa-house"
         icon-color: "tomato"
-        icon-size: 20
+        icon-size: 16
       - lat: 48.8606
         lon: 2.3376
         popup: "<b>Louvre Museum</b>"
         icon: "fa-solid fa-building-columns"
         icon-color: "#4a90d9"
-        icon-size: 20
+        icon-size: 16
         icon-anchor: [12, 24]           # explicit anchor offset
       - lat: 48.853
         lon: 2.3499
         popup: "<b>Notre-Dame</b>"
         icon: "fa-solid fa-church"
         icon-color: "green"
-        icon-size: 20
+        icon-size: 16
 ---
 
 {{{< leaflet t-icons >}}}
@@ -417,9 +793,9 @@ leaflet:
         lon: -0.082
         popup: "Font Awesome marker"
         tooltip: "Font Awesome icon"
-        icon: "fa-solid fa-location-dot"
+        icon: "fa-solid fa-house"
         icon-color: "tomato"
-        icon-size: 24
+        icon-size: 20
       - lat: 51.5
         lon: -0.1
         popup: "Second default Leaflet marker"
@@ -453,9 +829,34 @@ leaflet:
 
 {{< leaflet t-fontawesome >}}
 
+### FontAwesome dense markers
+
+Stress test with 50 markers and 50 different Font Awesome icon classes.
+
+{{< leaflet t-fontawesome-dense >}}
+
 ### Custom image icon
 
 The first marker uses a remote PNG via `icon: {url: ..., size: [...], anchor: [...]}`.
+
+```yaml
+leaflet:
+  t-image-icon:
+    center: [51.5, -0.09]
+    zoom: 13
+    height: "340px"
+    markers:
+      - lat: 51.5
+        lon: -0.09
+        popup: "Custom image icon"
+        icon:
+          url: "https://leafletjs.com/examples/custom-icons/leaf-green.png"
+          size: [38, 95]
+          anchor: [22, 94]
+      - lat: 51.505
+        lon: -0.07
+        popup: "Default blue marker alongside custom icon"
+```
 
 {{< leaflet t-image-icon >}}
 
@@ -463,9 +864,42 @@ The first marker uses a remote PNG via `icon: {url: ..., size: [...], anchor: [.
 
 Tests the `tile` sub-object with `url`, `attribution`, `subdomains`, and `maxZoom`.
 
+```yaml
+leaflet:
+  t-tile-dark:
+    center: [40.7128, -74.006]
+    zoom: 11
+    height: "380px"
+    tile:
+      url: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+      attribution: "&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors &copy; CARTO"
+      subdomains: "abcd"
+      maxZoom: 20
+    markers:
+      - lat: 40.7128
+        lon: -74.006
+        popup: "<b>New York City</b>"
+        icon: "fa-solid fa-house"
+        icon-color: "#ff6b6b"
+        icon-size: 20
+```
+
 {{< leaflet t-tile-dark >}}
 
 ### Custom tile layer — CartoDB Voyager
+
+```yaml
+leaflet:
+  t-tile-voyager:
+    center: [35.68, 139.69]
+    zoom: 12
+    height: "340px"
+    tile:
+      url: "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+      attribution: "&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors &copy; CARTO"
+      subdomains: "abcd"
+      maxZoom: 19
+```
 
 {{< leaflet t-tile-voyager >}}
 
@@ -475,7 +909,109 @@ Passes `zoomControl`, `scrollWheelZoom`, `dragging`, `doubleClickZoom`,
 `keyboard`, `minZoom`, and `maxZoom` directly to `L.map()`.
 Scroll-wheel zoom and double-click zoom are disabled; dragging is on.
 
+```yaml
+leaflet:
+  t-passthrough:
+    center: [40.7128, -74.006]
+    zoom: 14
+    height: "340px"
+    zoomControl: false
+    scrollWheelZoom: false
+    dragging: true
+    doubleClickZoom: false
+    keyboard: false
+    minZoom: 10
+    maxZoom: 18
+```
+
 {{< leaflet t-passthrough >}}
+
+### Passthrough Leaflet options — full map option set
+
+Exercises the remaining top-level `L.map()` options listed in README,
+including mixed-type options like `doubleClickZoom`, `scrollWheelZoom`, and
+`touchZoom` with the string value `"center"`.
+
+```yaml
+leaflet:
+  t-passthrough-all:
+      center: [40.7128, -74.006]
+      zoom: 13
+      height: "340px"
+      zoomControl: true
+      attributionControl: true
+      closePopupOnClick: true
+      minZoom: 3
+      maxZoom: 18
+      zoomSnap: 0.5
+      zoomDelta: 0.5
+      trackResize: true
+      boxZoom: true
+      doubleClickZoom: "center"
+      dragging: true
+      scrollWheelZoom: "center"
+      inertia: true
+      inertiaDeceleration: 3200
+      inertiaMaxSpeed: 1400
+      easeLinearity: 0.2
+      worldCopyJump: false
+      maxBoundsViscosity: 0.5
+      keyboard: true
+      keyboardPanDelta: 80
+      wheelDebounceTime: 40
+      wheelPxPerZoomLevel: 60
+      touchZoom: "center"
+      bounceAtZoomLimits: true
+      tapHold: true
+      tapTolerance: 15
+      zoomAnimation: true
+      zoomAnimationThreshold: 4
+      fadeAnimation: true
+      markerZoomAnimation: true
+      transform3DLimit: 8388608
+      preferCanvas: false
+```
+
+{{< leaflet t-passthrough-all >}}
+
+### Custom tile layer — all listed tile options
+
+Exercises all listed `tile` sub-options from README in a single map config.
+
+```yaml
+leaflet:
+  t-tile-all-options:
+    center: [40.7128, -74.006]
+    zoom: 11
+    height: "340px"
+    tile:
+      url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      attribution: "&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
+      minZoom: 0
+      maxZoom: 19
+      minNativeZoom: 0
+      maxNativeZoom: 19
+      subdomains: "abc"
+      errorTileUrl: "https://tile.openstreetmap.org/0/0/0.png"
+      zoomOffset: 0
+      tms: false
+      zoomReverse: false
+      detectRetina: false
+      crossOrigin: "anonymous"
+      referrerPolicy: "no-referrer"
+      opacity: 0.95
+      zIndex: 1
+      className: "ql-test-tile"
+      pane: "tilePane"
+      tileSize: 256
+      updateWhenIdle: false
+      updateWhenZooming: true
+      updateInterval: 200
+      keepBuffer: 2
+      noWrap: false
+```
+
+{{< leaflet t-tile-all-options >}}
 
 ## Inline shortcode maps
 
@@ -504,6 +1040,37 @@ Scroll-wheel zoom and double-click zoom are disabled; dragging is on.
 ```
 
 {{< leaflet center="[35.68, 139.69]" zoom=11 height="320px" scrollWheelZoom=false zoomControl=false >}}
+
+### Inline passthrough with string-valued options
+
+Checks that case-sensitive string values are preserved inline (for options that
+accept string forms in Leaflet).
+
+```lua
+{{{< leaflet center="[35.68, 139.69]" zoom=11 height="320px" scrollWheelZoom="center" touchZoom="center" doubleClickZoom="center" >}}}
+```
+
+{{< leaflet center="[35.68, 139.69]" zoom=11 height="320px" scrollWheelZoom="center" touchZoom="center" doubleClickZoom="center" >}}
+
+### Inline custom tile JSON
+
+Checks inline `tile` JSON object parsing.
+
+```lua
+{{{< leaflet center="[40.7128, -74.006]" zoom=11 height="320px" tile='{"url":"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png","attribution":"&copy; OpenStreetMap"}' >}}}
+```
+
+{{< leaflet center="[40.7128, -74.006]" zoom=11 height="320px" tile='{"url":"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png","attribution":"&copy; OpenStreetMap"}' >}}
+
+### Inline custom tile JSON (single-item array wrapper)
+
+Checks backward-compatible parsing of `tile` as a one-element JSON array.
+
+```lua
+{{{< leaflet center="[40.7128, -74.006]" zoom=11 height="320px" tile='[{"url":"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png","attribution":"&copy; OpenStreetMap"}]' >}}}
+```
+
+{{< leaflet center="[40.7128, -74.006]" zoom=11 height="320px" tile='[{"url":"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png","attribution":"&copy; OpenStreetMap"}]' >}}
 
 ### Inline with JSON markers
 
