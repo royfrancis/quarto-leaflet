@@ -36,6 +36,24 @@ leaflet:
 {{< leaflet mymap >}}
 ```
 
+You can also place shared defaults directly under `leaflet:` (global settings). Those values are applied to every named YAML map. For ordinary parameters, map-specific values override the global ones. The `tile` sub-object is merged key-by-key, so map-specific `tile` values override matching global `tile` keys while other global `tile` keys are retained. Top-level `markers` are not inherited by maps.
+
+```yaml
+---
+leaflet:
+  width: "100%"
+  touchZoom: true
+  tile:
+    className: "ql-global-default-tile"
+
+  mymap:
+    center: [59.33, 18.07]
+    zoom: 12
+---
+
+{{< leaflet mymap >}}
+```
+
 ### Inline arguments
 
 ```

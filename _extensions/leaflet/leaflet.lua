@@ -446,6 +446,63 @@ local SPECIAL = {
   tile=true,
 }
 
+local function is_meta_map_value(val)
+  if type(val) ~= "table" then return false end
+  if val.t ~= nil then return val.t == "MetaMap" end
+  for k, _ in pairs(val) do
+    if type(k) ~= "number" then return true end
+  end
+  return false
+end
+
+local function build_leaflet_defaults_meta(leaflet_meta)
+  if type(leaflet_meta) ~= "table" then return {} end
+
+  local defaults = {}
+  for k, v in pairs(leaflet_meta) do
+    if k ~= "markers" then
+      if SPECIAL[k] then
+        defaults[k] = v
+      elseif not is_meta_map_value(v) then
+        defaults[k] = v
+      end
+    end
+  end
+
+  return defaults
+end
+
+local function merge_cfg(base_cfg, override_cfg)
+  local merged = {}
+
+  if type(base_cfg) == "table" then
+    for k, v in pairs(base_cfg) do
+      merged[k] = v
+    end
+  end
+
+  if type(override_cfg) ~= "table" then return merged end
+
+  for k, v in pairs(override_cfg) do
+    if k == "markers" then
+      if type(v) == "table" then
+        append_markers(merged, v)
+      end
+    elseif k == "tile" and type(v) == "table" then
+      local tile = {}
+      if type(merged.tile) == "table" then
+        for tk, tv in pairs(merged.tile) do tile[tk] = tv end
+      end
+      for tk, tv in pairs(v) do tile[tk] = tv end
+      merged.tile = tile
+    else
+      merged[k] = v
+    end
+  end
+
+  return merged
+end
+
 -- Build a config table from a YAML metadata map (MetaMap).
 local function cfg_from_meta(mm)
   -- Guard: must be a table (MetaMap or similar); plain scalars have no map config.
@@ -781,8 +838,13 @@ return {
         return err_str(string.format("map '%s' not found in metadata", label))
       end
       local cfg_err
-      cfg, cfg_err = cfg_from_meta(map_meta)
+      local defaults_cfg, defaults_err = cfg_from_meta(build_leaflet_defaults_meta(leaflet_meta))
+      if defaults_err then return err_str(defaults_err) end
+
+      local map_cfg
+      map_cfg, cfg_err = cfg_from_meta(map_meta)
       if cfg_err then return err_str(cfg_err) end
+      cfg = merge_cfg(defaults_cfg, map_cfg)
     else
       local cfg_err
       cfg, cfg_err = cfg_from_kwargs(kwargs)
