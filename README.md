@@ -140,7 +140,81 @@ These are handled by the shortcode itself and are not passed to Leaflet:
 
 ### Passthrough Leaflet options
 
-Any option accepted by [`L.map()`](https://leafletjs.com/reference.html#map-option) can be added at the top level and will be forwarded verbatim. Any option accepted by [`L.tileLayer()`](https://leafletjs.com/reference.html#tilelayer-option) can be nested inside the `tile` sub-object.
+The shortcode handles a small set of extension-specific parameters itself, then forwards supported Leaflet options into `L.map(...)` and `L.tileLayer(...)`.
+
+Pass-through values are serialized from Quarto metadata or inline shortcode args, so scalar and boolean options are supported reliably. Structured values and callbacks from the Leaflet docs are not supported directly here. In practice, that means options such as `crs`, `layers`, `maxBounds`, `renderer`, tile `bounds`, function callbacks, or point/object forms of options like `tileSize` are outside the shortcode's current pass-through support.
+
+#### Top-level pass-through to `L.map()`
+
+Use these at the top level beside shortcode parameters such as `center`, `zoom`, `height`, `markers`, and `tile`.
+
+| Option | Type | Description |
+|---|---|---|
+| `zoomControl` | boolean | Show or hide the default zoom control. |
+| `attributionControl` | boolean | Show or hide the attribution control. |
+| `closePopupOnClick` | boolean | Close the currently open popup when the map is clicked. |
+| `minZoom` | number | Minimum zoom level allowed for the map. |
+| `maxZoom` | number | Maximum zoom level allowed for the map. |
+| `zoomSnap` | number | Force zoom levels to snap to this increment. |
+| `zoomDelta` | number | Zoom step used by zoom controls and keyboard shortcuts. |
+| `trackResize` | boolean | Automatically update the map when the browser window is resized. |
+| `boxZoom` | boolean | Enable shift-drag box zoom interaction. |
+| `doubleClickZoom` | boolean or string | Enable double-click zooming; Leaflet also accepts values such as `"center"`. |
+| `dragging` | boolean | Enable mouse/touch dragging of the map. |
+| `scrollWheelZoom` | boolean or string | Enable scroll-wheel zooming; Leaflet also accepts values such as `"center"`. |
+| `inertia` | boolean | Enable inertial panning after drag release. |
+| `inertiaDeceleration` | number | Deceleration rate used by inertial panning. |
+| `inertiaMaxSpeed` | number | Maximum speed used by inertial panning. |
+| `easeLinearity` | number | Control the rate curve of inertial panning. |
+| `worldCopyJump` | boolean | Reposition overlays when panning across the international date line. |
+| `maxBoundsViscosity` | number | Resistance when dragging outside `maxBounds` if you set bounds elsewhere in JS. |
+| `keyboard` | boolean | Enable keyboard navigation. |
+| `keyboardPanDelta` | number | Pixel distance to pan per keyboard step. |
+| `wheelDebounceTime` | number | Debounce time for mouse-wheel zoom. |
+| `wheelPxPerZoomLevel` | number | Mouse-wheel pixel delta required for one zoom level. |
+| `touchZoom` | boolean or string | Enable touch pinch zoom; Leaflet also accepts values such as `"center"`. |
+| `bounceAtZoomLimits` | boolean | Bounce pinch zoom when the map is already at min/max zoom. |
+| `tapHold` | boolean | Simulate a `contextmenu` event on long press for mobile Safari. |
+| `tapTolerance` | number | Maximum finger movement tolerated during tap interactions. |
+| `zoomAnimation` | boolean | Enable animated zoom transitions. |
+| `zoomAnimationThreshold` | number | Disable zoom animation when the zoom jump is larger than this value. |
+| `fadeAnimation` | boolean | Fade tiles in and out during zoom. |
+| `markerZoomAnimation` | boolean | Animate markers during zoom transitions. |
+| `transform3DLimit` | number | Maximum CSS translation before Leaflet resets transforms. |
+| `preferCanvas` | boolean | Prefer the Canvas renderer for vector layers. |
+
+#### Nested pass-through to `L.tileLayer()`
+
+Use these inside the shortcode-handled `tile:` sub-object.
+
+| Option | Type | Description |
+|---|---|---|
+| `url` | string | Tile URL template, for example `https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png`. |
+| `attribution` | string | Attribution HTML shown in the map attribution control. |
+| `minZoom` | number | Minimum zoom level at which tiles are requested. |
+| `maxZoom` | number | Maximum zoom level at which tiles are requested. |
+| `minNativeZoom` | number | Minimum native zoom level available from the tile source. |
+| `maxNativeZoom` | number | Maximum native zoom level available from the tile source. |
+| `subdomains` | string | Subdomain set used for `{s}` in the tile URL template. |
+| `errorTileUrl` | string | Fallback tile image to use when a tile fails to load. |
+| `zoomOffset` | number | Offset between map zoom and tile zoom. |
+| `tms` | boolean | Use TMS tile coordinates instead of the standard XYZ scheme. |
+| `zoomReverse` | boolean | Reverse zoom numbering for the tile source. |
+| `detectRetina` | boolean | Request higher-resolution tiles on retina displays. |
+| `crossOrigin` | boolean or string | Set the tile image `crossorigin` attribute. |
+| `referrerPolicy` | string or boolean | Set the tile image `referrerpolicy` attribute. |
+| `opacity` | number | Tile layer opacity. |
+| `zIndex` | number | Tile layer stacking order. |
+| `className` | string | CSS class name added to tile elements. |
+| `pane` | string | Map pane in which the tile layer is rendered. |
+| `tileSize` | number | Tile size in pixels when supplied as a single numeric value. |
+| `updateWhenIdle` | boolean | Delay tile updates until panning ends. |
+| `updateWhenZooming` | boolean | Update tiles continuously while zooming. |
+| `updateInterval` | number | Minimum delay between tile update batches. |
+| `keepBuffer` | number | Number of extra tile rows/columns kept outside the viewport. |
+| `noWrap` | boolean | Disable wrapping across the antimeridian. |
+
+Any additional scalar tile template variables are also forwarded. For example, if your `tile.url` contains `{foo}`, then `tile.foo: "bar"` will be passed through to Leaflet.
 
 ### Marker sub-parameters
 
