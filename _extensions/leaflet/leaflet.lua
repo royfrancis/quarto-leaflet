@@ -623,17 +623,18 @@ local function build_js(map_id, map_var, cfg)
               "var _m = L.marker(%s, {icon: _icon}).addTo(%s);\n",
               json(coords), map_var))
           else
-            -- Font icon
-            local sz    = m.icon_size  or 24
-            local color = m.icon_color or "currentColor"
-            local ax    = m.icon_anchor and m.icon_anchor[1] or math.floor(sz / 2)
-            local ay    = m.icon_anchor and m.icon_anchor[2] or math.floor(sz / 2)
-            local html  = string.format(
-              '<i class=\\"%s\\" style=\\"font-size:%dpx;color:%s;\\"></i>',
-              ic, sz, color)
+            -- Font icon rendered as a white glyph on a colored circular badge.
+            local sz         = m.icon_size or 16
+            local color      = m.icon_color or "currentColor"
+            local badge_size = math.max(math.floor(sz * 2 + 0.5), sz + 8)
+            local ax         = m.icon_anchor and m.icon_anchor[1] or math.floor(badge_size / 2)
+            local ay         = m.icon_anchor and m.icon_anchor[2] or math.floor(badge_size / 2)
+            local html       = string.format(
+              '<span class="quarto-leaflet-icon-badge" style="--ql-icon-size:%dpx;--ql-badge-size:%dpx;--ql-badge-color:%s;"><i class="%s quarto-leaflet-icon-glyph"></i></span>',
+              sz, badge_size, color, ic)
             table.insert(out, string.format(
-              'var _icon = L.divIcon({html: "%s", className: "leaflet-div-icon-custom", iconSize: [%d, %d], iconAnchor: [%d, %d]});\n',
-              html, sz, sz, ax, ay))
+              'var _icon = L.divIcon({html: %s, className: "leaflet-div-icon-custom", iconSize: [%d, %d], iconAnchor: [%d, %d]});\n',
+              json(html), badge_size, badge_size, ax, ay))
             table.insert(out, string.format(
               "var _m = L.marker(%s, {icon: _icon}).addTo(%s);\n",
               json(coords), map_var))
@@ -667,10 +668,16 @@ end
 -- ── Resource inclusion ───────────────────────────────────────────────────────
 
 local resources_added = false
+local fontawesome_added = false
 
 local function add_resources()
   if resources_added then return end
   resources_added = true
+  if not fontawesome_added then
+    quarto.doc.include_text("in-header",
+      '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">')
+    fontawesome_added = true
+  end
   quarto.doc.add_html_dependency({
     name        = "quarto-leaflet",
     version     = "1.0.0",

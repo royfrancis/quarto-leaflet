@@ -80,7 +80,7 @@ leaflet:
     markers-file: "data/stockholm-markers-pipe.txt"
     markers-sep: "|"
 
-  # Icon markers: Bootstrap Icons, icon-color, icon-size, icon-anchor
+  # Icon markers: Font Awesome, icon-color, icon-size, icon-anchor
   t-icons:
     center: [48.86, 2.35]
     zoom: 13
@@ -89,25 +89,25 @@ leaflet:
       - lat: 48.8584
         lon: 2.2945
         popup: "<b>Eiffel Tower</b>"
-        icon: "bi-geo-alt-fill"
+        icon: "fa-solid fa-location-dot"
         icon-color: "tomato"
-        icon-size: 28
+        icon-size: 20
       - lat: 48.8606
         lon: 2.3376
         popup: "<b>Louvre Museum</b>"
-        icon: "bi-building"
+        icon: "fa-solid fa-building-columns"
         icon-color: "#4a90d9"
-        icon-size: 24
+        icon-size: 20
         icon-anchor: [12, 24]           # explicit anchor offset
       - lat: 48.853
         lon: 2.3499
         popup: "<b>Notre-Dame</b>"
-        icon: "bi-pin-map-fill"
+        icon: "fa-solid fa-church"
         icon-color: "green"
-        icon-size: 26
+        icon-size: 20
 
-  # Regression check: default Leaflet markers next to a Bootstrap icon marker
-  t-default-vs-bsicon:
+  # Regression check: default Leaflet markers next to a Font Awesome icon marker
+  t-default-vs-fonticon:
     center: [51.505, -0.09]
     zoom: 13
     height: "340px"
@@ -118,11 +118,11 @@ leaflet:
         tooltip: "Default marker"
       - lat: 51.51
         lon: -0.082
-        popup: "Bootstrap Icons marker"
-        tooltip: "Bootstrap icon"
-        icon: "bi-geo-alt-fill"
+        popup: "Font Awesome marker"
+        tooltip: "Font Awesome icon"
+        icon: "fa-solid fa-location-dot"
         icon-color: "tomato"
-        icon-size: 28
+        icon-size: 24
       - lat: 51.5
         lon: -0.1
         popup: "Second default Leaflet marker"
@@ -140,21 +140,21 @@ leaflet:
         tooltip: "Forum"
         icon: "fa-solid fa-landmark"
         icon-color: "#b04a2b"
-        icon-size: 26
+        icon-size: 20
       - lat: 41.89
         lon: 12.4922
         popup: "<b>Colosseum</b>"
         tooltip: "Colosseum"
         icon: "fa-solid fa-torii-gate"
         icon-color: "#5c6f7b"
-        icon-size: 24
+        icon-size: 20
       - lat: 41.8986
         lon: 12.4768
         popup: "<b>Piazza Navona</b>"
         tooltip: "Piazza Navona"
         icon: "fa-solid fa-tree"
         icon-color: "#2f7d32"
-        icon-size: 24
+        icon-size: 20
 
   # Custom image icon via URL
   t-image-icon:
@@ -187,9 +187,9 @@ leaflet:
       - lat: 40.7128
         lon: -74.006
         popup: "<b>New York City</b>"
-        icon: "bi-geo-alt-fill"
+        icon: "fa-solid fa-location-dot"
         icon-color: "#ff6b6b"
-        icon-size: 28
+        icon-size: 24
 
   # Custom tile layer (CartoDB Voyager)
   t-tile-voyager:
@@ -246,9 +246,6 @@ format:
   html:
     code-overflow: wrap
     number-sections: true
-    include-in-header:
-      text: |
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 ---
 
 This page exercises every argument and feature of the `leaflet` shortcode extension, including a suite of error cases.
@@ -362,7 +359,7 @@ leaflet:
 
 {{< leaflet t-markers-pipe-txt >}}
 
-### Icon markers — Bootstrap Icons
+### Icon markers — Font Awesome
 
 Tests `icon`, `icon-color`, `icon-size`, and `icon-anchor`.
 
@@ -377,22 +374,22 @@ leaflet:
       - lat: 48.8584
         lon: 2.2945
         popup: "<b>Eiffel Tower</b>"
-        icon: "bi-geo-alt-fill"
+        icon: "fa-solid fa-location-dot"
         icon-color: "tomato"
-        icon-size: 28
+        icon-size: 20
       - lat: 48.8606
         lon: 2.3376
         popup: "<b>Louvre Museum</b>"
-        icon: "bi-building"
+        icon: "fa-solid fa-building-columns"
         icon-color: "#4a90d9"
-        icon-size: 24
+        icon-size: 20
         icon-anchor: [12, 24]           # explicit anchor offset
       - lat: 48.853
         lon: 2.3499
         popup: "<b>Notre-Dame</b>"
-        icon: "bi-pin-map-fill"
+        icon: "fa-solid fa-church"
         icon-color: "green"
-        icon-size: 26
+        icon-size: 20
 ---
 
 {{{< leaflet t-icons >}}}
@@ -400,14 +397,14 @@ leaflet:
 
 {{< leaflet t-icons >}}
 
-### Default markers and Bootstrap Icons together
+### Default markers and Font Awesome icons together
 
-This map exists to catch the packaging bug where default Leaflet markers disappear while Bootstrap icon markers still render. All three markers below must be visible at the same time.
+This map exists to catch the packaging bug where default Leaflet markers disappear while Font Awesome icon markers still render. All three markers below must be visible at the same time.
 
 ```yaml
 ---
 leaflet:
-  t-default-vs-bsicon:
+  t-default-vs-fonticon:
     center: [51.505, -0.09]
     zoom: 13
     height: "340px"
@@ -418,24 +415,24 @@ leaflet:
         tooltip: "Default marker"
       - lat: 51.51
         lon: -0.082
-        popup: "Bootstrap Icons marker"
-        tooltip: "Bootstrap icon"
-        icon: "bi-geo-alt-fill"
+        popup: "Font Awesome marker"
+        tooltip: "Font Awesome icon"
+        icon: "fa-solid fa-location-dot"
         icon-color: "tomato"
-        icon-size: 28
+        icon-size: 24
       - lat: 51.5
         lon: -0.1
         popup: "Second default Leaflet marker"
         tooltip: "Default marker 2"
 ---
-{{{< leaflet t-default-vs-bsicon >}}}
+{{{< leaflet t-default-vs-fonticon >}}}
 ```
 
-{{< leaflet t-default-vs-bsicon >}}
+{{< leaflet t-default-vs-fonticon >}}
 
 ### FontAwesome markers
 
-This page loads FontAwesome CSS in its HTML header so these icon-font markers can render without requiring extra project setup.
+These icon-font markers render without extra page setup because the extension loads Font Awesome automatically.
 
 ```yaml
 leaflet:
@@ -562,10 +559,10 @@ This checks inline JSON markers using Font Awesome classes.
 
 ```lua
 {{{< leaflet center="[41.9028, 12.4964]" zoom=13 height="320px"
-  markers='[{"lat":41.9028,"lon":12.4964,"popup":"<b>Roman Forum</b>","icon":"fa-solid fa-landmark","icon-color":"#b04a2b","icon-size":26},{"lat":41.89,"lon":12.4922,"popup":"<b>Colosseum</b>","icon":"fa-solid fa-torii-gate","icon-color":"#5c6f7b","icon-size":24},{"lat":41.8986,"lon":12.4768,"popup":"<b>Piazza Navona</b>","icon":"fa-solid fa-tree","icon-color":"#2f7d32","icon-size":24}]' >}}}
+  markers='[{"lat":41.9028,"lon":12.4964,"popup":"<b>Roman Forum</b>","icon":"fa-solid fa-landmark","icon-color":"#b04a2b","icon-size":20},{"lat":41.89,"lon":12.4922,"popup":"<b>Colosseum</b>","icon":"fa-solid fa-torii-gate","icon-color":"#5c6f7b","icon-size":20},{"lat":41.8986,"lon":12.4768,"popup":"<b>Piazza Navona</b>","icon":"fa-solid fa-tree","icon-color":"#2f7d32","icon-size":20}]' >}}}
 ```
 
-{{< leaflet center="[41.9028, 12.4964]" zoom=13 height="320px" markers='[{"lat":41.9028,"lon":12.4964,"popup":"<b>Roman Forum</b>","icon":"fa-solid fa-landmark","icon-color":"#b04a2b","icon-size":26},{"lat":41.89,"lon":12.4922,"popup":"<b>Colosseum</b>","icon":"fa-solid fa-torii-gate","icon-color":"#5c6f7b","icon-size":24},{"lat":41.8986,"lon":12.4768,"popup":"<b>Piazza Navona</b>","icon":"fa-solid fa-tree","icon-color":"#2f7d32","icon-size":24}]' >}}
+{{< leaflet center="[41.9028, 12.4964]" zoom=13 height="320px" markers='[{"lat":41.9028,"lon":12.4964,"popup":"<b>Roman Forum</b>","icon":"fa-solid fa-landmark","icon-color":"#b04a2b","icon-size":20},{"lat":41.89,"lon":12.4922,"popup":"<b>Colosseum</b>","icon":"fa-solid fa-torii-gate","icon-color":"#5c6f7b","icon-size":20},{"lat":41.8986,"lon":12.4768,"popup":"<b>Piazza Navona</b>","icon":"fa-solid fa-tree","icon-color":"#2f7d32","icon-size":20}]' >}}
 
 ## Error handling
 
@@ -663,13 +660,13 @@ Center is derived from the midpoint of the bounding box of the marker coordinate
 
 ```lua
 {{< leaflet zoom=13 height="320px"
-  markers='[{"lat":41.9028,"lon":12.4964,"popup":"<b>Roman Forum</b>","icon":"fa-solid fa-landmark","icon-color":"#b04a2b","icon-size":26},{"lat":41.89,"lon":12.4922,"popup":"<b>Colosseum</b>","icon":"fa-solid fa-torii-gate","icon-color":"#5c6f7b","icon-size":24},{"lat":41.8986,"lon":12.4768,"popup":"<b>Piazza Navona</b>","icon":"fa-solid fa-tree","icon-color":"#2f7d32","icon-size":24}]' >}}
+  markers='[{"lat":41.9028,"lon":12.4964,"popup":"<b>Roman Forum</b>","icon":"fa-solid fa-landmark","icon-color":"#b04a2b","icon-size":20},{"lat":41.89,"lon":12.4922,"popup":"<b>Colosseum</b>","icon":"fa-solid fa-torii-gate","icon-color":"#5c6f7b","icon-size":20},{"lat":41.8986,"lon":12.4768,"popup":"<b>Piazza Navona</b>","icon":"fa-solid fa-tree","icon-color":"#2f7d32","icon-size":20}]' >}}
 ```
 
 **Expected:** map renders and auto-centers on the marker centroid
 
 {{< leaflet zoom=13 height="320px"
-  markers='[{"lat":41.9028,"lon":12.4964,"popup":"<b>Roman Forum</b>","icon":"fa-solid fa-landmark","icon-color":"#b04a2b","icon-size":26},{"lat":41.89,"lon":12.4922,"popup":"<b>Colosseum</b>","icon":"fa-solid fa-torii-gate","icon-color":"#5c6f7b","icon-size":24},{"lat":41.8986,"lon":12.4768,"popup":"<b>Piazza Navona</b>","icon":"fa-solid fa-tree","icon-color":"#2f7d32","icon-size":24}]' >}}
+  markers='[{"lat":41.9028,"lon":12.4964,"popup":"<b>Roman Forum</b>","icon":"fa-solid fa-landmark","icon-color":"#b04a2b","icon-size":20},{"lat":41.89,"lon":12.4922,"popup":"<b>Colosseum</b>","icon":"fa-solid fa-torii-gate","icon-color":"#5c6f7b","icon-size":20},{"lat":41.8986,"lon":12.4768,"popup":"<b>Piazza Navona</b>","icon":"fa-solid fa-tree","icon-color":"#2f7d32","icon-size":20}]' >}}
 
 ### YAML markers without center or zoom
 

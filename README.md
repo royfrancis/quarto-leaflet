@@ -29,7 +29,7 @@ leaflet:
       - lat: 59.33
         lon: 18.07
         popup: "<b>Stockholm</b>"
-        icon: "bi-geo-alt-fill"
+        icon: "fa-solid fa-location-dot"
         icon-color: "red"
 ---
 
@@ -61,9 +61,9 @@ markers:
   - lat: 48.86
     lon: 2.35
     popup: "Paris"
-    icon: "bi-geo-alt-fill"    # Bootstrap Icon
+    icon: "fa-solid fa-location-dot"    # Font Awesome
     icon-color: "tomato"
-    icon-size: 28
+    icon-size: 24
   - lat: 48.86
     lon: 2.29
     popup: "Eiffel Tower"
@@ -150,9 +150,9 @@ Any option accepted by [`L.map()`](https://leafletjs.com/reference.html#map-opti
 | `lon` | *(required)* | Longitude of the marker |
 | `popup` | — | HTML content shown in a popup |
 | `tooltip` | — | Text shown as a tooltip |
-| `icon` | *(default marker)* | Icon font class (Bootstrap Icons / FontAwesome), or sub-object `{url, size, anchor}` for a custom image |
-| `icon-color` | `"currentColor"` | CSS colour for icon-font markers |
-| `icon-size` | `24` | Size in pixels for icon-font markers |
+| `icon` | *(default marker)* | Font Awesome class, or sub-object `{url, size, anchor}` for a custom image |
+| `icon-color` | `"currentColor"` | Background colour for the circular badge behind icon-font markers; the glyph itself is rendered in white |
+| `icon-size` | `16` | Base size in pixels for icon-font markers; scales both the white glyph and its circular badge |
 | `icon-anchor` | *(auto)* | `[x, y]` pixel anchor override |
 
 For full documentation, see the [usage guide](https://royfrancis.github.io/quarto-leaflet/usage.html).

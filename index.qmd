@@ -24,7 +24,7 @@ A Quarto shortcode extension to embed interactive [Leaflet](https://leafletjs.co
 
 - 🗺️ Interactive maps with OpenStreetMap tiles (or any custom tile provider)
 - 📍 Markers with popups, tooltips, and custom icons
-- 🎨 Bootstrap Icons and FontAwesome icon support for markers
+- 🎨 Font Awesome and custom image icon support for markers
 - 🔧 Arbitrary Leaflet options passthrough — any `L.map()` option just works
 - 📝 Two input modes: YAML metadata or inline shortcode arguments
 

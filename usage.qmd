@@ -40,21 +40,21 @@ leaflet:
       - lat: 48.8584
         lon: 2.2945
         popup: "<b>Eiffel Tower</b>"
-        icon: "bi-geo-alt-fill"
+        icon: "fa-solid fa-location-dot"
         icon-color: "tomato"
-        icon-size: 28
+        icon-size: 20
       - lat: 48.8606
         lon: 2.3376
         popup: "<b>Louvre Museum</b>"
-        icon: "bi-building"
+        icon: "fa-solid fa-building-columns"
         icon-color: "#4a90d9"
-        icon-size: 24
+        icon-size: 20
       - lat: 48.853
         lon: 2.3499
         popup: "<b>Notre-Dame</b>"
-        icon: "bi-pin-map-fill"
+        icon: "fa-solid fa-church"
         icon-color: "green"
-        icon-size: 26
+        icon-size: 20
   map-fontawesome:
     center: [41.9028, 12.4964]
     zoom: 13
@@ -65,19 +65,19 @@ leaflet:
         popup: "<b>Roman Forum</b>"
         icon: "fa-solid fa-landmark"
         icon-color: "#b04a2b"
-        icon-size: 26
+        icon-size: 20
       - lat: 41.89
         lon: 12.4922
         popup: "<b>Colosseum</b>"
         icon: "fa-solid fa-torii-gate"
         icon-color: "#5c6f7b"
-        icon-size: 24
+        icon-size: 20
       - lat: 41.8986
         lon: 12.4768
         popup: "<b>Piazza Navona</b>"
         icon: "fa-solid fa-tree"
         icon-color: "#2f7d32"
-        icon-size: 24
+        icon-size: 20
   map-options:
     center: [40.7128, -74.006]
     zoom: 14
@@ -94,9 +94,9 @@ leaflet:
       - lat: 40.7128
         lon: -74.006
         popup: "<b>New York City</b>"
-        icon: "bi-geo-alt-fill"
+        icon: "fa-solid fa-location-dot"
         icon-color: "#ff6b6b"
-        icon-size: 30
+        icon-size: 26
   map-tile-topplus:
     center: [40.7128, -74.006]
     zoom: 11
@@ -117,9 +117,6 @@ format:
   html: 
     code-overflow: wrap
     number-sections: true
-    include-in-header:
-      text: |
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 ---
 
 ## Overview
@@ -233,9 +230,9 @@ leaflet:
 
 ```tsv
 lat	lon	popup	tooltip	icon	icon-color	icon-size
-59.33	18.07	<b>Stockholm</b><br>Capital of Sweden	Stockholm	bi-geo-alt-fill	tomato	28
-59.35	18.10	Djurgården	Djurgården	bi-tree	#2f7d32	24
-59.31	18.05	Södermalm	Södermalm	bi-pin-map-fill	#4a90d9	26
+59.33	18.07	<b>Stockholm</b><br>Capital of Sweden	Stockholm	fa-solid fa-location-dot	tomato	24
+59.35	18.10	Djurgården	Djurgården	fa-solid fa-tree	#2f7d32	20
+59.31	18.05	Södermalm	Södermalm	fa-solid fa-map-pin	#4a90d9	22
 ```
 
 ```lua
@@ -276,9 +273,9 @@ leaflet:
 
 ```csv
 lat,lon,popup,tooltip,icon,icon-color,icon-size
-59.33,18.07,"<b>Stockholm</b><br>Capital of Sweden",Stockholm,bi-geo-alt-fill,tomato,28
-59.35,18.10,Djurgården,Djurgården,bi-tree,#2f7d32,24
-59.31,18.05,Södermalm,Södermalm,bi-pin-map-fill,#4a90d9,26
+59.33,18.07,"<b>Stockholm</b><br>Capital of Sweden",Stockholm,fa-solid fa-location-dot,tomato,24
+59.35,18.10,Djurgården,Djurgården,fa-solid fa-tree,#2f7d32,20
+59.31,18.05,Södermalm,Södermalm,fa-solid fa-map-pin,#4a90d9,22
 ```
 
 ```lua
@@ -297,7 +294,7 @@ Inline shortcodes can also read CSV files:
 
 ## Icon markers
 
-Use Bootstrap Icons (built into Quarto) for markers. Specify the icon name, color, and size:
+Use Font Awesome classes for markers. The extension now loads the stylesheet automatically, so no extra header setup is required.
 
 ```yaml
 ---
@@ -310,21 +307,21 @@ leaflet:
       - lat: 48.8584
         lon: 2.2945
         popup: "<b>Eiffel Tower</b>"
-        icon: "bi-geo-alt-fill"
+        icon: "fa-solid fa-location-dot"
         icon-color: "tomato"
-        icon-size: 28
+        icon-size: 20
       - lat: 48.8606
         lon: 2.3376
         popup: "<b>Louvre Museum</b>"
-        icon: "bi-building"
+        icon: "fa-solid fa-building-columns"
         icon-color: "#4a90d9"
-        icon-size: 24
+        icon-size: 20
       - lat: 48.853
         lon: 2.3499
         popup: "<b>Notre-Dame</b>"
-        icon: "bi-pin-map-fill"
+        icon: "fa-solid fa-church"
         icon-color: "green"
-        icon-size: 26
+        icon-size: 20
 ---
 
 {{{< leaflet map-icons >}}}
@@ -334,16 +331,10 @@ leaflet:
 
 ### Font Awesome example
 
-Load Font Awesome in the document header, then use Font Awesome classes in `icon`.
+Use Font Awesome classes in `icon`. The extension injects the stylesheet automatically.
 
 ```yaml
 ---
-format:
-  html:
-    include-in-header:
-      text: |
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
 leaflet:
   map-fontawesome:
     center: [41.9028, 12.4964]
@@ -355,13 +346,13 @@ leaflet:
         popup: "<b>Roman Forum</b>"
         icon: "fa-solid fa-landmark"
         icon-color: "#b04a2b"
-        icon-size: 26
+        icon-size: 20
       - lat: 41.89
         lon: 12.4922
         popup: "<b>Colosseum</b>"
         icon: "fa-solid fa-torii-gate"
         icon-color: "#5c6f7b"
-        icon-size: 24
+        icon-size: 20
 ---
 
 {{{< leaflet map-fontawesome >}}}
@@ -373,15 +364,14 @@ leaflet:
 
 | Mode | Example | Description |
 |---|---|---|
-| Bootstrap Icons | `icon: "bi-geo-alt-fill"` | Built into Quarto HTML. Use any [Bootstrap Icon](https://icons.getbootstrap.com/) name. |
-| FontAwesome | `icon: "fa-solid fa-tree"` | Requires [Font Awesome](https://fontawesome.com/icons/) CSS to be included in the document header. |
+| Font Awesome | `icon: "fa-solid fa-tree"` | Included automatically by the extension. Use any [Font Awesome](https://fontawesome.com/icons/) class name. |
 | Custom image | `icon: {url: "pin.png", size: [25,41], anchor: [12,41]}` | Any image file. |
 | Default | *(omit `icon`)* | Standard Leaflet blue marker. |
 
 Additional icon options:
 
-- `icon-color`: CSS color for icon font markers (default: `"currentColor"`)
-- `icon-size`: Size in pixels for icon font markers (default: `24`)
+- `icon-color`: background color for the circular badge behind icon-font markers; the glyph itself is white (default: `"currentColor"`)
+- `icon-size`: base size in pixels for icon-font markers; scales both the white glyph and its circular badge (default: `20`)
 - `icon-anchor`: `[x, y]` anchor point override
 - `markers-sep`: field separator for `markers-file` (for example `","`, `"\t"`, `"|"`)
 
