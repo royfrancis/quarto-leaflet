@@ -54,7 +54,7 @@ local function meta_to_bool(val)
 end
 
 -- Convert a MetaList of scalars to a Lua array of numbers.
--- Used for center: [lat, lon] and position: [lat, lon].
+-- Used for center: [lat, lon].
 local function meta_list_to_nums(val)
   if type(val) ~= "table" then return nil end
   local result = {}
@@ -93,6 +93,114 @@ local function append_markers(target, markers)
   for _, marker in ipairs(markers) do
     table.insert(target.markers, marker)
   end
+end
+
+local function marker_coords(marker)
+  if type(marker) ~= "table" then return nil end
+
+  local lat = tonumber(marker.lat)
+  local lon = tonumber(marker.lon)
+  if lat ~= nil and lon ~= nil then
+    return lat, lon
+  end
+
+  if type(marker.position) == "table" and #marker.position == 2 then
+    lat = tonumber(marker.position[1])
+    lon = tonumber(marker.position[2])
+    if lat ~= nil and lon ~= nil then
+      return lat, lon
+    end
+  end
+
+  return nil
+end
+
+local function marker_from_meta_entry(m_meta)
+  if type(m_meta) ~= "table" then return nil end
+
+  local m = {}
+  local lat = meta_to_num(m_meta["lat"] or m_meta["latitude"])
+  local lon = meta_to_num(m_meta["lon"] or m_meta["lng"] or m_meta["long"] or m_meta["longitude"])
+  if lat ~= nil and lon ~= nil then
+    m.lat = lat
+    m.lon = lon
+  elseif m_meta["position"] then
+    -- Backward-compatible fallback for older docs using position: [lat, lon].
+    local pos = meta_list_to_nums(m_meta["position"])
+    if pos and #pos == 2 then
+      m.lat = pos[1]
+      m.lon = pos[2]
+    end
+  end
+
+  if m_meta["popup"]   then m.popup   = meta_to_html(m_meta["popup"]) end
+  if m_meta["tooltip"] then m.tooltip = meta_to_html(m_meta["tooltip"]) end
+  if m_meta["icon"] then
+    local iv = m_meta["icon"]
+    if type(iv) == "table" and iv["url"] then
+      m.icon = {
+        url    = meta_to_str(iv["url"]),
+        size   = iv["size"]   and meta_list_to_nums(iv["size"]),
+        anchor = iv["anchor"] and meta_list_to_nums(iv["anchor"]),
+      }
+    else
+      m.icon = meta_to_str(iv)
+    end
+  end
+  if m_meta["icon-color"]  then m.icon_color  = meta_to_str(m_meta["icon-color"]) end
+  if m_meta["icon-size"]   then m.icon_size   = meta_to_num(m_meta["icon-size"]) end
+  if m_meta["icon-anchor"] then m.icon_anchor = meta_list_to_nums(m_meta["icon-anchor"]) end
+
+  return m
+end
+
+local function marker_from_json_entry(mj)
+  if type(mj) ~= "table" then return nil end
+
+  local m = {}
+  local lat = tonumber(mj["lat"] or mj["latitude"])
+  local lon = tonumber(mj["lon"] or mj["lng"] or mj["long"] or mj["longitude"])
+  if lat ~= nil and lon ~= nil then
+    m.lat = lat
+    m.lon = lon
+  elseif type(mj["position"]) == "table" and #mj["position"] == 2 then
+    -- Backward-compatible fallback for older docs using position: [lat, lon].
+    m.lat = tonumber(mj["position"][1])
+    m.lon = tonumber(mj["position"][2])
+  end
+  m.popup       = mj["popup"]
+  m.tooltip     = mj["tooltip"]
+  m.icon        = mj["icon"]
+  m.icon_color  = mj["icon-color"]
+  m.icon_size   = mj["icon-size"]
+  m.icon_anchor = mj["icon-anchor"]
+
+  return m
+end
+
+local function center_from_markers(markers)
+  if type(markers) ~= "table" then return nil end
+
+  local count = 0
+  local lat_sum = 0
+  local lon_sum = 0
+  local only_lat = nil
+  local only_lon = nil
+
+  for _, marker in ipairs(markers) do
+    local lat, lon = marker_coords(marker)
+    if lat ~= nil and lon ~= nil then
+      count = count + 1
+      lat_sum = lat_sum + lat
+      lon_sum = lon_sum + lon
+      only_lat = lat
+      only_lon = lon
+    end
+  end
+
+  if count == 0 then return nil end
+  if count == 1 then return { only_lat, only_lon } end
+  return { lat_sum / count, lon_sum / count }
 end
 
 local function split_delimited_line(line, separator)
@@ -171,20 +279,11 @@ local function resolve_doc_path(path)
 end
 
 local function marker_from_row(row)
-  local position = nil
-  if row.position and row.position ~= "" then
-    position = parse_coord_str(row.position)
-  end
-  if position == nil then
-    local lat = tonumber(row.lat or row.latitude)
-    local lon = tonumber(row.lon or row.lng or row.long or row.longitude)
-    if lat ~= nil and lon ~= nil then
-      position = { lat, lon }
-    end
-  end
-  if position == nil then return nil end
+  local lat = tonumber(row.lat or row.latitude)
+  local lon = tonumber(row.lon or row.lng or row.long or row.longitude)
+  if lat == nil or lon == nil then return nil end
 
-  local marker = { position = position }
+  local marker = { lat = lat, lon = lon }
   if row.popup and row.popup ~= "" then marker.popup = row.popup end
   if row.tooltip and row.tooltip ~= "" then marker.tooltip = row.tooltip end
 
@@ -261,6 +360,14 @@ local function markers_from_file(markers_path, separator)
   return markers
 end
 
+local function append_markers_from_file(cfg, markers_file, markers_sep)
+  if not markers_file then return nil end
+  local markers, err = markers_from_file(markers_file, markers_sep)
+  if err then return err end
+  append_markers(cfg, markers)
+  return nil
+end
+
 -- ── JSON encoder ─────────────────────────────────────────────────────────────
 
 local function json(val)
@@ -319,8 +426,6 @@ local SPECIAL = {
   markers=true,
   ["markers-file"]=true,
   markers_file=true,
-  ["markers-separator"]=true,
-  markers_separator=true,
   ["markers-sep"]=true,
   markers_sep=true,
   tile=true,
@@ -350,30 +455,8 @@ local function cfg_from_meta(mm)
   if mm["markers"] and type(mm["markers"]) == "table" then
     local markers = {}
     for _, m_meta in ipairs(mm["markers"]) do
-      if type(m_meta) == "table" then
-        local m = {}
-        if m_meta["position"] then
-          m.position = meta_list_to_nums(m_meta["position"])
-        end
-        if m_meta["popup"]   then m.popup   = meta_to_html(m_meta["popup"]) end
-        if m_meta["tooltip"] then m.tooltip = meta_to_html(m_meta["tooltip"]) end
-        if m_meta["icon"] then
-          local iv = m_meta["icon"]
-          if type(iv) == "table" and iv["url"] then
-            m.icon = {
-              url    = meta_to_str(iv["url"]),
-              size   = iv["size"]   and meta_list_to_nums(iv["size"]),
-              anchor = iv["anchor"] and meta_list_to_nums(iv["anchor"]),
-            }
-          else
-            m.icon = meta_to_str(iv)
-          end
-        end
-        if m_meta["icon-color"]  then m.icon_color  = meta_to_str(m_meta["icon-color"]) end
-        if m_meta["icon-size"]   then m.icon_size   = meta_to_num(m_meta["icon-size"]) end
-        if m_meta["icon-anchor"] then m.icon_anchor = meta_list_to_nums(m_meta["icon-anchor"]) end
-        table.insert(markers, m)
-      end
+      local m = marker_from_meta_entry(m_meta)
+      if m ~= nil then table.insert(markers, m) end
     end
     append_markers(cfg, markers)
   end
@@ -381,16 +464,11 @@ local function cfg_from_meta(mm)
   local markers_file =
     meta_to_nonempty_str(mm["markers-file"]) or
     meta_to_nonempty_str(mm["markers_file"])
-  local markers_separator =
-    meta_to_nonempty_str(mm["markers-separator"]) or
-    meta_to_nonempty_str(mm["markers_separator"]) or
+  local markers_sep =
     meta_to_nonempty_str(mm["markers-sep"]) or
     meta_to_nonempty_str(mm["markers_sep"])
-  if markers_file then
-    local markers, err = markers_from_file(markers_file, markers_separator)
-    if err then return nil, err end
-    append_markers(cfg, markers)
-  end
+  local markers_err = append_markers_from_file(cfg, markers_file, markers_sep)
+  if markers_err then return nil, markers_err end
 
   -- Passthrough: any non-special key → L.map option
   for k, v in pairs(mm) do
@@ -414,27 +492,21 @@ local function cfg_from_kwargs(kwargs)
 
   local function kstr(k) return meta_to_nonempty_str(kwargs[k]) end
 
-  local c = kstr("center"); if c then cfg.center = parse_coord_str(c) end
+  local c_str = kstr("center")
+  if c_str then cfg.center = parse_coord_str(c_str) end
   local z = kstr("zoom");   if z then cfg.zoom   = tonumber(z) end
   local h = kstr("height"); if h then cfg.height = h end
   local w = kstr("width");  if w then cfg.width  = w end
 
-  -- markers as inline JSON string, e.g. markers='[{"position":[lat,lon],"popup":"text"}]'
+  -- markers as inline JSON string, e.g. markers='[{"lat":51.5,"lon":-0.09,"popup":"text"}]'
   local m_str = kstr("markers")
   if m_str then
     local ok, parsed = pcall(pandoc.json.decode, m_str)
     if ok and type(parsed) == "table" then
       local markers = {}
       for _, mj in ipairs(parsed) do
-        local m = {}
-        if type(mj["position"]) == "table" then m.position = mj["position"] end
-        m.popup       = mj["popup"]
-        m.tooltip     = mj["tooltip"]
-        m.icon        = mj["icon"]
-        m.icon_color  = mj["icon-color"]
-        m.icon_size   = mj["icon-size"]
-        m.icon_anchor = mj["icon-anchor"]
-        table.insert(markers, m)
+        local m = marker_from_json_entry(mj)
+        if m ~= nil then table.insert(markers, m) end
       end
       append_markers(cfg, markers)
     end
@@ -443,16 +515,11 @@ local function cfg_from_kwargs(kwargs)
   local markers_file =
     kstr("markers-file") or
     kstr("markers_file")
-  local markers_separator =
-    kstr("markers-separator") or
-    kstr("markers_separator") or
+  local markers_sep =
     kstr("markers-sep") or
     kstr("markers_sep")
-  if markers_file then
-    local markers, err = markers_from_file(markers_file, markers_separator)
-    if err then return nil, err end
-    append_markers(cfg, markers)
-  end
+  local markers_err = append_markers_from_file(cfg, markers_file, markers_sep)
+  if markers_err then return nil, markers_err end
 
   for k, v in pairs(kwargs) do
     if not SPECIAL[k] then
@@ -537,7 +604,10 @@ local function build_js(map_id, map_var, cfg)
   -- Markers
   if cfg.markers then
     for _, m in ipairs(cfg.markers) do
-      if m.position then
+      local lat, lon = marker_coords(m)
+
+      if lat ~= nil and lon ~= nil then
+        local coords = { lat, lon }
         if m.icon then
           local ic = m.icon
           if type(ic) == "table" and ic.url then
@@ -550,7 +620,7 @@ local function build_js(map_id, map_var, cfg)
             table.insert(out, string.format("var _icon = L.icon(%s);\n", json(opts)))
             table.insert(out, string.format(
               "var _m = L.marker(%s, {icon: _icon}).addTo(%s);\n",
-              json(m.position), map_var))
+              json(coords), map_var))
           else
             -- Font icon
             local sz    = m.icon_size  or 24
@@ -565,11 +635,11 @@ local function build_js(map_id, map_var, cfg)
               html, sz, sz, ax, ay))
             table.insert(out, string.format(
               "var _m = L.marker(%s, {icon: _icon}).addTo(%s);\n",
-              json(m.position), map_var))
+              json(coords), map_var))
           end
         else
           table.insert(out, string.format("var _m = L.marker(%s).addTo(%s);\n",
-            json(m.position), map_var))
+            json(coords), map_var))
         end
         if m.popup   then table.insert(out, string.format("_m.bindPopup(%s);\n",   json(m.popup))) end
         if m.tooltip then table.insert(out, string.format("_m.bindTooltip(%s);\n", json(m.tooltip))) end
@@ -648,8 +718,15 @@ return {
       if cfg_err then return err_str(cfg_err) end
     end
 
+    if cfg.center == nil then
+      cfg.center = center_from_markers(cfg.markers)
+    end
+
+    if cfg.zoom == nil then
+      cfg.zoom = 13
+    end
+
     if cfg.center == nil then return err_str("'center' is required") end
-    cfg.zoom = cfg.zoom or 13
 
     -- ── Non-HTML/revealjs formats: produce no output ─────────────────────────
     if not (quarto.doc.is_format("html") or quarto.doc.is_format("revealjs")) then

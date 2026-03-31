@@ -7,7 +7,8 @@ leaflet:
     zoom: 13
     height: "400px"
     markers:
-      - position: [48.8584, 2.2945]
+      - lat: 48.8584
+        lon: 2.2945
         popup: "<b>Eiffel Tower</b>"
         tooltip: "Eiffel Tower"
 format:

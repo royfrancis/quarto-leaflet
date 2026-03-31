@@ -12,35 +12,41 @@ leaflet:
     zoom: 12
     height: "400px"
     markers:
-      - position: [59.33, 18.07]
+      - lat: 59.33
+        lon: 18.07
         popup: "<b>Stockholm</b><br>Capital of Sweden"
         tooltip: "Stockholm"
-      - position: [59.35, 18.10]
+      - lat: 59.35
+        lon: 18.10
         popup: "Djurgården"
-      - position: [59.31, 18.05]
+      - lat: 59.31
+        lon: 18.05
         popup: "Södermalm"
   map-markers-tab:
     center: [59.33, 18.07]
     zoom: 12
     height: "400px"
     markers-file: "data/stockholm-markers.tsv"
-    markers-separator: "\t"
+    markers-sep: "\t"
   map-icons:
     center: [48.86, 2.35]
     zoom: 13
     height: "400px"
     markers:
-      - position: [48.8584, 2.2945]
+      - lat: 48.8584
+        lon: 2.2945
         popup: "<b>Eiffel Tower</b>"
         icon: "bi-geo-alt-fill"
         icon-color: "tomato"
         icon-size: 28
-      - position: [48.8606, 2.3376]
+      - lat: 48.8606
+        lon: 2.3376
         popup: "<b>Louvre Museum</b>"
         icon: "bi-building"
         icon-color: "#4a90d9"
         icon-size: 24
-      - position: [48.853, 2.3499]
+      - lat: 48.853
+        lon: 2.3499
         popup: "<b>Notre-Dame</b>"
         icon: "bi-pin-map-fill"
         icon-color: "green"
@@ -50,17 +56,20 @@ leaflet:
     zoom: 13
     height: "400px"
     markers:
-      - position: [41.9028, 12.4964]
+      - lat: 41.9028
+        lon: 12.4964
         popup: "<b>Roman Forum</b>"
         icon: "fa-solid fa-landmark"
         icon-color: "#b04a2b"
         icon-size: 26
-      - position: [41.89, 12.4922]
+      - lat: 41.89
+        lon: 12.4922
         popup: "<b>Colosseum</b>"
         icon: "fa-solid fa-torii-gate"
         icon-color: "#5c6f7b"
         icon-size: 24
-      - position: [41.8986, 12.4768]
+      - lat: 41.8986
+        lon: 12.4768
         popup: "<b>Piazza Navona</b>"
         icon: "fa-solid fa-tree"
         icon-color: "#2f7d32"
@@ -100,10 +109,10 @@ format:
 ## Inline map with markers
 
 ```lua
-{{{< leaflet center="[59.33, 18.07]" zoom=12 height="350px" markers='[{"position":[59.33,18.07],"popup":"<b>Stockholm</b>","tooltip":"Stockholm"},{"position":[59.35,18.10],"popup":"Djurgården"},{"position":[59.31,18.05],"popup":"Södermalm"}]' >}}}
+{{{< leaflet center="[59.33, 18.07]" zoom=12 height="350px" markers='[{"lat":59.33,"lon":18.07,"popup":"<b>Stockholm</b>","tooltip":"Stockholm"},{"lat":59.35,"lon":18.10,"popup":"Djurgården"},{"lat":59.31,"lon":18.05,"popup":"Södermalm"}]' >}}}
 ```
 
-{{< leaflet center="[59.33, 18.07]" zoom=12 height="350px" markers='[{"position":[59.33,18.07],"popup":"<b>Stockholm</b>","tooltip":"Stockholm"},{"position":[59.35,18.10],"popup":"Djurgården"},{"position":[59.31,18.05],"popup":"Södermalm"}]' >}}
+{{< leaflet center="[59.33, 18.07]" zoom=12 height="350px" markers='[{"lat":59.33,"lon":18.07,"popup":"<b>Stockholm</b>","tooltip":"Stockholm"},{"lat":59.35,"lon":18.10,"popup":"Djurgården"},{"lat":59.31,"lon":18.05,"popup":"Södermalm"}]' >}}
 
 ## TSV file approach
 
@@ -119,16 +128,13 @@ leaflet:
     zoom: 12
     height: "400px"
     markers-file: "data/stockholm-markers.tsv"
-    markers-separator: "\t"
+    markers-sep: "\t"
 format: 
   revealjs:
     include-in-header:
       text: |
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 ```
-
-:::
-::: {.column width="50%"}
 
 ```tsv
 lat	lon	popup	tooltip	icon	icon-color	icon-size
@@ -138,13 +144,16 @@ lat	lon	popup	tooltip	icon	icon-color	icon-size
 ```
 
 :::
-:::
+::: {.column width="50%"}
 
 ```lua
 {{{< leaflet map-markers-tab >}}}
 ```
 
 {{< leaflet map-markers-tab >}}
+
+:::
+:::
 
 ## Map icons
 
@@ -161,17 +170,20 @@ leaflet:
     zoom: 13
     height: "400px"
     markers:
-      - position: [48.8584, 2.2945]
+      - lat: 48.8584
+        lon: 2.2945
         popup: "<b>Eiffel Tower</b>"
         icon: "bi-geo-alt-fill"
         icon-color: "tomato"
         icon-size: 28
-      - position: [48.8606, 2.3376]
+      - lat: 48.8606
+        lon: 2.3376
         popup: "<b>Louvre Museum</b>"
         icon: "bi-building"
         icon-color: "#4a90d9"
         icon-size: 24
-      - position: [48.853, 2.3499]
+      - lat: 48.853
+        lon: 2.3499
         popup: "<b>Notre-Dame</b>"
         icon: "bi-pin-map-fill"
         icon-color: "green"
@@ -209,12 +221,14 @@ leaflet:
     zoom: 13
     height: "400px"
     markers:
-      - position: [41.9028, 12.4964]
+      - lat: 41.9028
+        lon: 12.4964
         popup: "<b>Roman Forum</b>"
         icon: "fa-solid fa-landmark"
         icon-color: "#b04a2b"
         icon-size: 26
-      - position: [41.89, 12.4922]
+      - lat: 41.89
+        lon: 12.4922
         popup: "<b>Colosseum</b>"
         icon: "fa-solid fa-torii-gate"
         icon-color: "#5c6f7b"

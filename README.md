@@ -2,6 +2,8 @@
 
 A Quarto shortcode extension to embed interactive [Leaflet](https://leafletjs.com/) maps in **HTML** and **revealjs** formats.
 
+:warning: This does not support all leaflet features. It is intended for simple maps with markers and custom tiles.
+
 ## Install
 
 Requires Quarto >= 1.4.0. In your project root:
@@ -24,7 +26,8 @@ leaflet:
     zoom: 12
     height: "400px"
     markers:
-      - position: [59.33, 18.07]
+      - lat: 59.33
+        lon: 18.07
         popup: "<b>Stockholm</b>"
         icon: "bi-geo-alt-fill"
         icon-color: "red"
@@ -39,19 +42,32 @@ leaflet:
 {{< leaflet center="[51.505, -0.09]" zoom=13 height="400px" >}}
 ```
 
+Inline markers are passed as JSON using `lat` and `lon`:
+
+```lua
+{{< leaflet center="[59.33, 18.07]" zoom=12 markers='[{"lat":59.33,"lon":18.07,"popup":"Stockholm"}]' >}}
+```
+
+If `center` is omitted and markers are provided, the extension derives the
+center automatically. A single marker becomes the center; multiple markers use
+their centroid. If `zoom` is omitted, it defaults to `13`.
+
 ### Markers with icons
 
 ```yaml
 markers:
-  - position: [48.86, 2.35]
+  - lat: 48.86
+    lon: 2.35
     popup: "Paris"
     icon: "bi-geo-alt-fill"    # Bootstrap Icon
     icon-color: "tomato"
     icon-size: 28
-  - position: [48.86, 2.29]
+  - lat: 48.86
+    lon: 2.29
     popup: "Eiffel Tower"
     icon: "fa-solid fa-tower-broadcast"  # FontAwesome
-  - position: [48.85, 2.35]
+  - lat: 48.85
+    lon: 2.35
     popup: "Custom"
     icon:
       url: "marker.png"       # Custom image
@@ -69,8 +85,10 @@ leaflet:
     center: [59.33, 18.07]
     zoom: 12
     markers-file: "data/stockholm-markers.txt"
-    markers-separator: "|"
+    markers-sep: "|"
 ```
+
+The file must include coordinate columns (`lat` + `lon`).
 
 Defaults: comma for `.csv`, tab for `.tsv`, tab otherwise.
 
@@ -103,59 +121,37 @@ leaflet:
 
 ## Parameters reference
 
-### Extension parameters
+### Extension-specific parameters
+
+These are handled by the shortcode itself and are not passed to Leaflet:
 
 | Parameter | Default | Description |
 |---|---|---|
+| `center` | derived from markers when available | Map center `[lat, lng]`; still required when no marker coordinates are available |
+| `zoom` | `13` | Initial zoom level |
 | `height` | `"400px"` | CSS height of the map container |
 | `width` | `"100%"` | CSS width of the map container |
-| `tile` | *(OSM default)* | Tile layer configuration object |
-| `tile.url` | OSM URL | Tile URL template |
-| `tile.attribution` | OSM attribution | Tile attribution HTML |
-| `markers` | `[]` | Array of marker objects |
-| `markers-file` | — | Path to marker rows in a delimited text file |
-| `markers-separator` | auto | Separator for `markers-file` (for example `,`, `\t`, `|`) |
+| `markers` | `[]` | Array of marker objects (see syntax below) |
+| `markers-file` | — | Path to a delimited text file with `lat` and `lon` columns |
+| `markers-sep` | auto | Field separator for `markers-file`; defaults to `,` for `.csv`, `\t` otherwise |
+| `tile` | *(OSM)* | Tile layer sub-object (see syntax below) |
 
-### Passthrough parameters
+### Passthrough Leaflet options
 
-All [Leaflet Map options](https://leafletjs.com/reference.html#map-option) are supported as passthrough. Common ones include:
+Any option accepted by [`L.map()`](https://leafletjs.com/reference.html#map-option) can be added at the top level and will be forwarded verbatim. Any option accepted by [`L.tileLayer()`](https://leafletjs.com/reference.html#tilelayer-option) can be nested inside the `tile` sub-object.
 
-| Parameter | Default | Description |
-|---|---|---|
-| `center` | *(required)* | Map center `[lat, lng]` |
-| `zoom` | `13` | Initial zoom level |
-| `minZoom` | — | Minimum zoom level |
-| `maxZoom` | — | Maximum zoom level |
-| `zoomControl` | `true` | Show zoom +/- controls |
-| `dragging` | `true` | Allow map dragging |
-| `scrollWheelZoom` | `true` | Zoom with scroll wheel |
-| `doubleClickZoom` | `true` | Zoom on double click |
-| `boxZoom` | `true` | Zoom to area by shift+drag |
-| `maxBounds` | — | Restrict panning to bounds |
-
-### Marker parameters
+### Marker sub-parameters
 
 | Parameter | Default | Description |
 |---|---|---|
-| `position` | *(required)* | `[lat, lng]` |
-| `popup` | — | HTML popup content |
-| `tooltip` | — | Tooltip text |
-| `icon` | *(default marker)* | Icon name or config object |
-| `icon-color` | `"currentColor"` | CSS color for icon font |
-| `icon-size` | `24` | Icon size in pixels |
-| `icon-anchor` | *(auto)* | `[x, y]` anchor override |
-
-### Tile layer parameters
-
-Any [TileLayer option](https://leafletjs.com/reference.html#tilelayer-option) can be included inside the `tile` object:
-
-| Parameter | Default | Description |
-|---|---|---|
-| `url` | OSM | URL template |
-| `attribution` | OSM | Attribution HTML |
-| `maxZoom` | `18` | Max zoom |
-| `subdomains` | `"abc"` | URL subdomains |
-| `opacity` | `1.0` | Layer opacity |
+| `lat` | *(required)* | Latitude of the marker |
+| `lon` | *(required)* | Longitude of the marker |
+| `popup` | — | HTML content shown in a popup |
+| `tooltip` | — | Text shown as a tooltip |
+| `icon` | *(default marker)* | Icon font class (Bootstrap Icons / FontAwesome), or sub-object `{url, size, anchor}` for a custom image |
+| `icon-color` | `"currentColor"` | CSS colour for icon-font markers |
+| `icon-size` | `24` | Size in pixels for icon-font markers |
+| `icon-anchor` | *(auto)* | `[x, y]` pixel anchor override |
 
 For full documentation, see the [usage guide](https://royfrancis.github.io/quarto-leaflet/usage.html).
 
