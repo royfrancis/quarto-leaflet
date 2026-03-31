@@ -49,8 +49,10 @@ Inline markers are passed as JSON using `lat` and `lon`:
 ```
 
 If `center` is omitted and markers are provided, the extension derives the
-center automatically. A single marker becomes the center; multiple markers use
-their centroid. If `zoom` is omitted, it defaults to `13`.
+center automatically as the midpoint of the bounding box of all marker
+coordinates. This is unbiased with respect to point density — a dense cluster
+has no more influence on the center than a single isolated point. If `zoom` is
+omitted, it defaults to `13`.
 
 ### Markers with icons
 

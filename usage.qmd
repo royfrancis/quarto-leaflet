@@ -129,9 +129,12 @@ The `leaflet` shortcode embeds interactive Leaflet maps into Quarto documents. I
 1. **YAML metadata** — define map configuration in the document frontmatter and reference by label
 2. **Inline shortcode arguments** — pass parameters directly in the shortcode
 
-`center` can be omitted when marker coordinates are available. In that case, a
-single marker becomes the center and multiple markers are reduced to their
-centroid. If `zoom` is omitted or cannot be parsed, the shortcode uses `13`.
+`center` can be omitted when marker coordinates are available. In that case,
+the center is computed as the midpoint of the bounding box of all marker
+coordinates (i.e. the midpoint between the extreme latitudes and the extreme
+longitudes). This is unbiased with respect to point density — a dense cluster
+has no more influence than a single isolated point. If `zoom` is omitted or
+cannot be parsed, the shortcode uses `13`.
 
 ## Basic map
 

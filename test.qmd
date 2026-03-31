@@ -29,7 +29,7 @@ leaflet:
         popup: "Södermalm (popup only)"
       - position: [59.28, 18.09]        # neither popup nor tooltip
 
-  # Marker-only map: center is derived from the marker centroid and zoom defaults to 13
+  # Marker-only map: center is derived from the bounding-box midpoint of marker coordinates and zoom defaults to 13
   t-markers-auto-center:
     height: "360px"
     markers:
@@ -58,7 +58,7 @@ leaflet:
     height: "360px"
     markers-file: "data/stockholm-markers.csv"
 
-  # Marker file only: center is derived from marker coordinates and zoom defaults to 13
+  # Marker file only: center is derived from the bounding-box midpoint of marker coordinates and zoom defaults to 13
   t-markers-file-auto-center:
     height: "360px"
     markers-file: "data/stockholm-markers.tsv"
@@ -659,7 +659,7 @@ the error without crashing.
 
 ### Inline markers without center
 
-Center is derived from the centroid of the marker coordinates.
+Center is derived from the midpoint of the bounding box of the marker coordinates.
 
 ```lua
 {{< leaflet zoom=13 height="320px"

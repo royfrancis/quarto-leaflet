@@ -178,29 +178,30 @@ local function marker_from_json_entry(mj)
   return m
 end
 
+-- Returns the midpoint of the bounding box of all marker coordinates.
+-- Unlike the centroid (arithmetic mean), this is unbiased with respect to
+-- point density: every point contributes equally to the spatial extent
+-- regardless of how many neighbours it has nearby.
 local function center_from_markers(markers)
   if type(markers) ~= "table" then return nil end
 
   local count = 0
-  local lat_sum = 0
-  local lon_sum = 0
-  local only_lat = nil
-  local only_lon = nil
+  local lat_min, lat_max = math.huge, -math.huge
+  local lon_min, lon_max = math.huge, -math.huge
 
   for _, marker in ipairs(markers) do
     local lat, lon = marker_coords(marker)
     if lat ~= nil and lon ~= nil then
       count = count + 1
-      lat_sum = lat_sum + lat
-      lon_sum = lon_sum + lon
-      only_lat = lat
-      only_lon = lon
+      if lat < lat_min then lat_min = lat end
+      if lat > lat_max then lat_max = lat end
+      if lon < lon_min then lon_min = lon end
+      if lon > lon_max then lon_max = lon end
     end
   end
 
   if count == 0 then return nil end
-  if count == 1 then return { only_lat, only_lon } end
-  return { lat_sum / count, lon_sum / count }
+  return { (lat_min + lat_max) / 2, (lon_min + lon_max) / 2 }
 end
 
 local function split_delimited_line(line, separator)
