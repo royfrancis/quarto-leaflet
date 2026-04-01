@@ -296,7 +296,7 @@ Inline shortcodes can also read CSV files:
 
 ## Icon markers
 
-Use Font Awesome 6 classes for markers. The extension now loads the stylesheet automatically, so no extra header setup is required.
+Use [Font Awesome 6 classes](https://fontawesome.com/v6/search) for markers. The extension now loads the stylesheet automatically, so no extra header setup is required.
 
 ```yaml
 ---

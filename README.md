@@ -240,7 +240,7 @@ Any additional scalar tile template variables are also forwarded. For example, i
 | `lon` | *(required)* | Longitude of the marker |
 | `popup` | — | HTML content shown in a popup |
 | `tooltip` | — | Text shown as a tooltip |
-| `icon` | *(default marker)* | Font Awesome class (FA 6.5.2), or sub-object `{url, size, anchor}` for a custom image |
+| `icon` | *(default marker)* | [Font Awesome v6 class](https://fontawesome.com/v6/search), or sub-object `{url, size, anchor}` for a custom image |
 | `icon-color` | `"currentColor"` | Colour of the location-pin background icon behind icon-font markers; the glyph itself is rendered in white |
 | `icon-size` | `14` | Base size in pixels for icon-font markers; scales both the white glyph and its location-pin background |
 | `icon-anchor` | *(auto)* | `[x, y]` pixel anchor override |
