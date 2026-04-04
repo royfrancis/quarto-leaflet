@@ -20,6 +20,9 @@ website:
       - text: "Test"
         href: "test.html"
         aria-label: "Test"
+      - text: "Versions"
+        href: "changelog.html"
+        aria-label: "Change log"
     right:
       - icon: github
         aria-label: "GitHub"
